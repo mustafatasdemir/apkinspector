@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<!-- Head Block-->
+		{% block head %}
+			<title>
+				{% block title %}
+				{% endblock %}
+			</title>
+		{% endblock %}
+		<!-- End of Head Block-->
+
+		<!-- Scripts Block-->
+		{% block scripts %}
+
+			{{ moment.include_moment() }}
+
+		{% endblock %}
+		<!-- End of Scripts Block-->
+
+	</head>
+	<body>
+		<!-- Body Block-->
+		{% block body %}
+		{% endblock %}
+		<!-- End of Body Block-->
+	</body>
+</html>
