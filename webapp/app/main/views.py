@@ -1,5 +1,3 @@
-# Copyright 2014, Quixey Inc.
-# 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy of
 # the License at
@@ -27,6 +25,8 @@ def session_exists():
 @main.route('/', methods = ['GET'])
 @main.route('/index', methods = ['GET'])
 def index():
+	a = 5
+
 	return render_template("index.html")
 
 
