@@ -43,6 +43,7 @@ class CallInOut:
         file = open('invokedir2.txt','a')
         file.write("%s\n" % self.invokeDir2)
         file.close
+        
  # yuan build the call graph
     def callTree(self, method):
          import Global

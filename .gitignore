@@ -2,3 +2,5 @@
 *.DS_Store
 *.log
 venv/*
+out/*
+temp/*

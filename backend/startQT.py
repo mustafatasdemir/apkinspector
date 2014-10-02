@@ -289,7 +289,6 @@ class startQT(QMainWindow, Ui_mainWindow):
             print Global.NAV_P
             print "NAV_NO="
             print Global.NAV_NO
-#            method = self.path2method[1]
             pathindex = linecache.getline('1.txt',i-1)
             pathindex = pathindex.strip()
             classname = linecache.getline('1.txt',i)
@@ -315,7 +314,7 @@ class startQT(QMainWindow, Ui_mainWindow):
         import Global
         text = self.plainTextEdit_smali.toPlainText()
         #print text
-        file = open("smali.smali",'w')
+        file = open("./out/makesmali.smali",'w')
         file.write("%s" % text)
         file.close()
         classname = Global.currentclass
@@ -323,19 +322,18 @@ class startQT(QMainWindow, Ui_mainWindow):
         print classname
       
         classPath = SYSPATH + "/temp/ApktoolOutput/smali/" + str(classname)
-#        classPath = SYSPATH + "/temp/ApktoolOutput/smali/sms_thread.smali"
         print classPath
         
         file = open(classPath,'w')
         #print file.read()
         file.write("%s" % text)
         file.close()
-        cmd = "java -jar smali-1.2.5.jar " +  classPath + " -o class.dex"
+        cmd = "java -jar ./lib/smali-1.2.5.jar " +  classPath + " -o ./out/class.dex"
         if os.system(cmd) !=0:
-            QMessageBox.warning(self ,'Compile Smali', 'Fail!')
+            print 'Smali compilation failed!'
             return  0
         else:
-            QMessageBox.information(self ,'Compile Smali', 'Success!')
+            print 'Smali compilation succeeded!'
             return  1
 
     def forwardon(self):
@@ -437,7 +435,6 @@ class startQT(QMainWindow, Ui_mainWindow):
                  QMessageBox.warning(self ,'Sensitive API', 'SEND_SMS')
             if permissions[i]  == "android.permission.WRITE_SMS":
                     QMessageBox.warning(self ,'Sensitive API', 'WRITE_SMS')
- #       self.sensitiveper(Global.APK)
 
 
     def Tab_Methods(self, a, vm, vmx):
@@ -525,7 +522,7 @@ class startQT(QMainWindow, Ui_mainWindow):
         self.treeWidget_methods.setSelectionBehavior(QAbstractItemView.SelectItems)
 
 
-          # after locating the method, get the content for Tab_Dalvik, Tab_CFG, Tab_Bytecode,Tab_CallInOut and Tab_Smali
+    # after locating the method, get the content for Tab_Dalvik, Tab_CFG, Tab_Bytecode,Tab_CallInOut and Tab_Smali
     def displayMethod(self,method,classname):
           import Global
           print "new new"
@@ -742,8 +739,6 @@ class startQT(QMainWindow, Ui_mainWindow):
             build the CFG Tab
             @param method: the method which is onclicked
         """
-        print "Tavbcfg"
-     
         if method.get_code() == None:
             self.Graph.scene.clear()
             return
@@ -756,12 +751,7 @@ class startQT(QMainWindow, Ui_mainWindow):
         print linkList
         
         self.Graph.setPageSize(pagesize)
-        self.Graph.show(nodeList, linkList)       
-     
-        
-    # yuan build the call graph tab
-
-  
+        self.Graph.show(nodeList, linkList)
 
     
     def Tab_Files(self, filename):
@@ -790,16 +780,6 @@ class startQT(QMainWindow, Ui_mainWindow):
             if Global.FLAG_JAD == 1:
               print "ded finish"
               break
-#        while True:
-#           time.sleep(100)
-#           i=i+1
-#           print "########still ded"
-#           if Global.FLAG_JAD == 1:
-#             break
-         
-
-#        if Global.FLAG_JAD != 1:
-#            return
 
         rootpath = SYSPATH +  "/temp/java"
         parent = self.treeWidget_files
@@ -925,7 +905,6 @@ class startQT(QMainWindow, Ui_mainWindow):
         if method.get_code() == None:
             self.Graph_call.scene.clear()
             return
-            print "why do not show?"
         methodInvokeList = self.CL.get_methodInvoke()
         allmethod = self.CL.vm.get_methods()
         xdotc = XDot(method, Global.VM, Global.VMX)
@@ -937,7 +916,6 @@ class startQT(QMainWindow, Ui_mainWindow):
 #        wnd = QtSvg.QSvgRenderer(self)
 #        wnd.load("3.svg")
 #        wnd.show
-        print "why do not show show?"
  
         print nodeList
         print linkList
@@ -973,11 +951,6 @@ class startQT(QMainWindow, Ui_mainWindow):
             callOutContent += temp[0] + "  (" + temp[1] + ")" + "\n"
             
         self.textEdit_call.setText(callInContent + "\n\n\n" + callOutContent)
-
-
-           
-
-           
 
 
 
