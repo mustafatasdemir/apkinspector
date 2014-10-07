@@ -1,0 +1,34 @@
+package android.support.v4.net; class ConnectivityManagerCompatJellyBean {/*
+
+.class Landroid/support/v4/net/ConnectivityManagerCompatJellyBean;
+.super Ljava/lang/Object;
+.source "ConnectivityManagerCompatJellyBean.java"
+
+
+# direct methods
+.method constructor <init>()V
+    .locals 0
+
+    .prologue
+    .line 24
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    #p0=(Reference);
+    return-void
+.end method
+
+.method public static isActiveNetworkMetered(Landroid/net/ConnectivityManager;)Z
+    .locals 1
+    .parameter "cm"
+
+    .prologue
+    .line 26
+    invoke-virtual {p0}, Landroid/net/ConnectivityManager;->isActiveNetworkMetered()Z
+
+    move-result v0
+
+    #v0=(Boolean);
+    return v0
+.end method
+
+*/}
