@@ -2,7 +2,7 @@
 
 # This file is part of Androguard.
 #
-# Copyright (C) 2010, Anthony Desnos <desnos at t0t0.org>
+# Copyright (C) 2012, Anthony Desnos <desnos at t0t0.fr>
 # All rights reserved.
 #
 # Androguard is free software: you can redistribute it and/or modify
@@ -23,35 +23,42 @@ from optparse import OptionParser
 from xml.dom import minidom
 import codecs
 
-PATH_INSTALL = "./"
-sys.path.append(PATH_INSTALL + "./core/")
-sys.path.append(PATH_INSTALL + "./core/bytecodes")
+from androguard.core import androconf
+from androguard.core.bytecodes import apk
 
-import apk, misc
 
 option_0 = { 'name' : ('-i', '--input'), 'help' : 'filename input (APK or android\'s binary xml)', 'nargs' : 1 }
 option_1 = { 'name' : ('-o', '--output'), 'help' : 'filename output of the xml', 'nargs' : 1 }
 option_2 = { 'name' : ('-v', '--version'), 'help' : 'version of the API', 'action' : 'count' }
 options = [option_0, option_1, option_2]
 
+
 def main(options, arguments) :
-    if options.input != None and options.output != None :
+    if options.input != None :
         buff = ""
-        if ".apk" in options.input :
-            a = apk.APK( options.input )
-            buff = a.xml[ "AndroidManifest.xml" ].toprettyxml()
-        elif ".xml" in options.input :
-            ap = apk.AXMLPrinter( open(options.input, "rb").read() )
-            buff = minidom.parseString( ap.getBuff() ).toprettyxml()
-        else :
+
+        ret_type = androconf.is_android(options.input)
+        if ret_type == "APK":
+            a = apk.APK(options.input)
+            print a.get_android_manifest_xml()
+            buff = a.get_android_manifest_xml().toprettyxml(encoding="utf-8")
+            a.get_activities()
+        elif ".xml" in options.input:
+            ap = apk.AXMLPrinter(open(options.input, "rb").read())
+            buff = minidom.parseString(ap.get_buff()).toprettyxml(encoding="utf-8")
+        else:
             print "Unknown file type"
             return
 
-        fd = codecs.open(options.output, "w", "utf-8")
-        fd.write( buff )
-        fd.close()
+        if options.output != None :
+            fd = codecs.open(options.output, "w", "utf-8")
+            fd.write( buff )
+            fd.close()
+        else :
+            print buff
+
     elif options.version != None :
-        print "Androaxml version %s" % misc.ANDROAXML_VERSION
+        print "Androaxml version %s" % androconf.ANDROGUARD_VERSION
 
 if __name__ == "__main__" :
     parser = OptionParser()

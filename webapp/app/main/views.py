@@ -17,8 +17,9 @@ from flask import render_template, session, redirect, url_for, \
 current_app, request, abort
 from . import main
 from .. import db
-from ..helpers.decompile import Decompile
+#from ..helpers.decompile import Decompile
 from ..helpers.APKtool import APKtool
+from ..helpers.APKInfo import APK
 
 apktool = None
 
@@ -34,23 +35,23 @@ def index():
 	return render_template("index.html")
 
 def initialize():
-	decomp_thread = Decompile("SuperAwesomeContacts.apk")
-	decomp_thread.start()
-	decomp_thread.join()
-	apktool = APKtool()
+	#decomp_thread = Decompile("SuperAwesomeContacts.apk")
+	#decomp_thread.start()
+	#decomp_thread.join()
+	#apktool = APKtool()
 	print "hhhhhhh"
 
 
 @main.route('/smali', methods = ['GET'])
 def smali():
-	initialize();
-	classname =""
-	[flag, data] = apktool.getSmaliCode(classname)
-        if flag == 0:
-            smali_output = "Failed to show smali code"
-        elif flag == 1:
-            smali_output = data
-	return render_template("smali.html", smali_output = smali_output)
+	#initialize();
+	#classname =""
+	#[flag, data] = apktool.getSmaliCode(classname)
+    #    if flag == 0:
+    #        smali_output = "Failed to show smali code"
+    #    elif flag == 1:
+    #        smali_output = data
+	return render_template("smali.html")
 
 @main.route('/java', methods = ['GET'])
 def java():
@@ -68,6 +69,44 @@ def java():
 
 	return render_template("java.html", java_output = java_output)
 
+@main.route('/trial')
+def trial():
+	apk = APK("SuperAwesomeContacts.apk")
+	permissions = None
+	permission_count = None
+	is_valid = None
+	file_name = None
+	services = None
+	receivers = None
+	version_code = None
+	version_name = None
+	package = None
+	if apk.isVaildAPK():
+		(permissions, permission_count) = apk.getPermissions()
+		permissions = permissions.split("\n")
+		is_valid = apk.isVaildAPK()
+		file_name = apk.getFilename()
+		(services, services_count) = apk.getServices()
+		services = services.split("\n")
+		(receivers, receivers_count) = apk.getReceivers()
+		receivers = receivers.split("\n")
+		version_code = apk.getVersionCode()
+		version_name = apk.getVersionName()
+		package = apk.getPackage()
+		return render_template("apk.html", permissions = permissions,
+			is_valid = is_valid,
+			file_name = file_name,
+			services = services,
+			receivers = receivers,
+			version_code = version_code,
+			version_name = version_name,
+			package = package)
+	else:
+		abort(500)
+
+@main.route('/apk')
+def apk():
+	return render_template("deneme.html")
 
 @main.route('/logout')
 def logout():

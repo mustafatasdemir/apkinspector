@@ -25,9 +25,7 @@ sys.path.append(PATH_INSTALL + "/core/wm")
 sys.path.append(PATH_INSTALL + "/core/protection")
 sys.path.append(PATH_INSTALL + "/classification")
 
-import androguard, analysis, androlyze
-import bytecode
-from dvm import *
+import androguard, androlyze
 
 class APK:
     filename = None
@@ -35,7 +33,9 @@ class APK:
     
     def __init__(self, filename):
         self.filename = filename
+        print filename
         self.apk = androlyze.APK(filename)
+        print self.apk.is_valid_APK()
 
     def isVaildAPK(self):
         return self.apk.is_valid_APK()

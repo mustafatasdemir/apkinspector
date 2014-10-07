@@ -2,7 +2,7 @@
 
 # This file is part of Androguard.
 #
-# Copyright (C) 2010, Anthony Desnos <desnos at t0t0.org>
+# Copyright (C) 2012, Anthony Desnos <desnos at t0t0.fr>
 # All rights reserved.
 #
 # Androguard is free software: you can redistribute it and/or modify
@@ -22,8 +22,10 @@ import sys, os
 
 from optparse import OptionParser
 
-import androguard, analysis, misc
-from bytecode import method2dot, method2format
+from androguard.core.androgen import Androguard
+from androguard.core import androconf
+from androguard.core.analysis import analysis
+from androguard.core.bytecode import method2dot, method2format
 
 option_0 = { 'name' : ('-i', '--input'), 'help' : 'file : use this filename', 'nargs' : 1 }
 option_1 = { 'name' : ('-o', '--output'), 'help' : 'base directory to output all files', 'nargs' : 1 }
@@ -89,15 +91,19 @@ def export_apps_to_format( a, output, dot=None, _format=None ) :
 
 def main(options, arguments) :
     if options.input != None and options.output != None :
-        a = androguard.Androguard( [ options.input ] )
-
-        create_directories( a, options.output )
+        a = Androguard( [ options.input ] )
 
         if options.dot != None or options.format != None :
+            create_directories( a, options.output )
             export_apps_to_format( a, options.output, options.dot, options.format )
+        else :
+          print "Please, specify a format or dot option"
 
     elif options.version != None :
-        print "Androdd version %s" % misc.ANDRODD_VERSION
+        print "Androdd version %s" % androconf.ANDROGUARD_VERSION
+    
+    else :
+      print "Please, specify an input file and an output directory"
 
 if __name__ == "__main__" :
     parser = OptionParser()

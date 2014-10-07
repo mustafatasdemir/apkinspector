@@ -2,7 +2,7 @@
 
 # This file is part of Androguard.
 #
-# Copyright (C) 2010, Anthony Desnos <desnos at t0t0.org>
+# Copyright (C) 2012, Anthony Desnos <desnos at t0t0.fr>
 # All rights reserved.
 #
 # Androguard is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import sys, os, cmd, threading, re, atexit
 
 from optparse import OptionParser
 
-import androguard, misc, jvm
+import androguard, androconf, jvm
 
 # External Libraries
 
@@ -135,7 +135,7 @@ def main(options, arguments) :
         AndroDump( apd )
 
     elif options.version != None :
-        print "Androdump version %s" % misc.ANDRODUMP_VERSION
+        print "Androdump version %s" % androconf.ANDROGUARD_VERSION
 
 if __name__ == "__main__" :
     parser = OptionParser()

@@ -2,7 +2,7 @@
 
 # This file is part of Androguard.
 #
-# Copyright (C) 2010, Anthony Desnos <desnos at t0t0.org>
+# Copyright (C) 2012, Anthony Desnos <desnos at t0t0.fr>
 # All rights reserved.
 #
 # Androguard is free software: you can redistribute it and/or modify
@@ -22,10 +22,8 @@ from xml.sax.saxutils import escape
 import sys, os
 from optparse import OptionParser
 
-PATH_INSTALL = "./"
-sys.path.append(PATH_INSTALL + "./")
-
-import androguard, analysis, misc
+from androguard.core.androgen import Androguard
+from androguard.core.analysis import analysis
 
 option_0 = { 'name' : ('-i', '--input'), 'help' : 'filename input', 'nargs' : 1 }
 option_1 = { 'name' : ('-o', '--output'), 'help' : 'filename output of the xgmml', 'nargs' : 1 }
@@ -108,16 +106,16 @@ def export_xgmml_cfg(g, fd) :
             fill = "#87ceeb"
 
         if i.start == 0 :
-            fd.write("<att type=\"string\" name=\"node.label\" value=\"%s\\n%s\"/>\n" % (escape(name), i.get_ins()[-1].get_name()))
+            fd.write("<att type=\"string\" name=\"node.label\" value=\"%s\\n%s\"/>\n" % (escape(name), i.get_instructions()[-1].get_name()))
             width = 3
             fill = "#ff0000"
 
             METHODS_ID[ class_name + name + descriptor ] = len(NODES_ID)
         else :
-            fd.write("<att type=\"string\" name=\"node.label\" value=\"0x%x\\n%s\"/>\n" % (i.start, i.get_ins()[-1].get_name()))
+            fd.write("<att type=\"string\" name=\"node.label\" value=\"0x%x\\n%s\"/>\n" % (i.start, i.get_instructions()[-1].get_name()))
 
         size = 0
-        for tmp_ins in i.get_ins() :
+        for tmp_ins in i.get_instructions() :
             size += (tmp_ins.get_length() / 2)
 
 
@@ -149,7 +147,7 @@ def export_xgmml_fcg(a, x, fd) :
     classes = a.get_classes_names()
 
     # Methods flow graph
-    for m, _ in x.tainted_packages.get_packages() :
+    for m, _ in x.get_tainted_packages().get_packages() :
         paths = m.get_methods()
         for j in paths :
             if j.get_method().get_class_name() in classes and m.get_info() in classes :
@@ -158,7 +156,7 @@ def export_xgmml_fcg(a, x, fd) :
                     if t not in METHODS_ID :
                         continue
 
-                    bb1 = x.hmethods[ j.get_method() ].basic_blocks.get_basic_block( j.get_idx() )
+                    bb1 = x.get_method( j.get_method() ).basic_blocks.get_basic_block( j.get_idx() )
 
                     node1 = get_node_name(j.get_method(), bb1) + "@0x%x" % j.get_idx()
                     node2 = "%s-%s-%s" % (m.get_info(), escape(j.get_name()), escape(j.get_descriptor()))
@@ -187,7 +185,7 @@ def export_xgmml_efcg(a, x, fd) :
     classes = a.get_classes_names()
 
     # Methods flow graph
-    for m, _ in x.tainted_packages.get_packages() :
+    for m, _ in x.get_tainted_packages().get_packages() :
         paths = m.get_methods()
         for j in paths :
             if j.get_method().get_class_name() in classes and m.get_info() not in classes :
@@ -212,7 +210,7 @@ def export_xgmml_efcg(a, x, fd) :
                         NODES_ID[ t ] = len(NODES_ID)
                         EXTERNAL_METHODS_ID[ t ] = NODES_ID[ t ]
 
-                    bb1 = x.hmethods[ j.get_method() ].basic_blocks.get_basic_block( j.get_idx() )
+                    bb1 = x.get_method( j.get_method() ).basic_blocks.get_basic_block( j.get_idx() )
 
                     node1 = get_node_name(j.get_method(), bb1) + "@0x%x" % j.get_idx()
                     node2 = "%s-%s-%s" % (m.get_info(), escape(j.get_name()), escape(j.get_descriptor()))
@@ -238,7 +236,7 @@ def export_xgmml_efcg(a, x, fd) :
                     EDGES_ID[ label ] = id
 
 def export_apps_to_xgmml( input, output, fcg, efcg ) :
-    a = androguard.Androguard( [ input ] )
+    a = Androguard( [ input ] )
 
     fd = open(output, "w")
     fd.write("<?xml version='1.0'?>\n")
@@ -248,7 +246,7 @@ def export_apps_to_xgmml( input, output, fcg, efcg ) :
         x = analysis.VMAnalysis( vm )
         # CFG
         for method in vm.get_methods() :
-            g = x.hmethods[ method ]
+            g = x.get_method( method )
             export_xgmml_cfg(g, fd)
 
         if fcg :
