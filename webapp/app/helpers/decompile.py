@@ -4,7 +4,6 @@ import JAD
 import APKtool
 from APKInfo import *
 
-
 class Decompile(threading.Thread):
     # progress = None
     filename = None

@@ -4,10 +4,15 @@ import time
 import os
 
 sys.path.append(sys.path[0]+"/tools/androguard/")
+sys.path.append(sys.path[0]+"/tools/androguard/androguard/core/bytecodes")
+sys.path.append(sys.path[0]+"/tools/androguard/androguard/core/analysis")
+sys.path.append(sys.path[0]+"/tools/androguard/androguard/core/")
 
 print sys.path
 
-import androlyze
+import androguard, analysis, androlyze
+import bytecode
+from dvm import *
 
 class APK:
     filename = None
