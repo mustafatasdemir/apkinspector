@@ -1,0 +1,66 @@
+package android.support.v4.widget; class ScrollerCompat$ScrollerCompatImpl { void a() { int a;
+a=0;// .class interface abstract Landroid/support/v4/widget/ScrollerCompat$ScrollerCompatImpl;
+a=0;// .super Ljava/lang/Object;
+a=0;// .source "ScrollerCompat.java"
+a=0;// 
+a=0;// 
+a=0;// # annotations
+a=0;// .annotation system Ldalvik/annotation/EnclosingClass;
+a=0;//     value = Landroid/support/v4/widget/ScrollerCompat;
+a=0;// .end annotation
+a=0;// 
+a=0;// .annotation system Ldalvik/annotation/InnerClass;
+a=0;//     accessFlags = 0x608
+a=0;//     name = "ScrollerCompatImpl"
+a=0;// .end annotation
+a=0;// 
+a=0;// 
+a=0;// # virtual methods
+a=0;// .method public abstract abortAnimation(Ljava/lang/Object;)V
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract computeScrollOffset(Ljava/lang/Object;)Z
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract createScroller(Landroid/content/Context;Landroid/view/animation/Interpolator;)Ljava/lang/Object;
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract fling(Ljava/lang/Object;IIIIIIII)V
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract fling(Ljava/lang/Object;IIIIIIIIII)V
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract getCurrVelocity(Ljava/lang/Object;)F
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract getCurrX(Ljava/lang/Object;)I
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract getCurrY(Ljava/lang/Object;)I
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract getFinalX(Ljava/lang/Object;)I
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract getFinalY(Ljava/lang/Object;)I
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract isFinished(Ljava/lang/Object;)Z
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract isOverScrolled(Ljava/lang/Object;)Z
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract notifyHorizontalEdgeReached(Ljava/lang/Object;III)V
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract notifyVerticalEdgeReached(Ljava/lang/Object;III)V
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract startScroll(Ljava/lang/Object;IIII)V
+a=0;// .end method
+a=0;// 
+a=0;// .method public abstract startScroll(Ljava/lang/Object;IIIII)V
+a=0;// .end method
+}}

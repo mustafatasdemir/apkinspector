@@ -1,0 +1,129 @@
+package android.support.v4.widget; class EdgeEffectCompat$BaseEdgeEffectImpl { void a() { int a;
+a=0;// .class Landroid/support/v4/widget/EdgeEffectCompat$BaseEdgeEffectImpl;
+a=0;// .super Ljava/lang/Object;
+a=0;// .source "EdgeEffectCompat.java"
+a=0;// 
+a=0;// # interfaces
+a=0;// .implements Landroid/support/v4/widget/EdgeEffectCompat$EdgeEffectImpl;
+a=0;// 
+a=0;// 
+a=0;// # annotations
+a=0;// .annotation system Ldalvik/annotation/EnclosingClass;
+a=0;//     value = Landroid/support/v4/widget/EdgeEffectCompat;
+a=0;// .end annotation
+a=0;// 
+a=0;// .annotation system Ldalvik/annotation/InnerClass;
+a=0;//     accessFlags = 0x8
+a=0;//     name = "BaseEdgeEffectImpl"
+a=0;// .end annotation
+a=0;// 
+a=0;// 
+a=0;// # direct methods
+a=0;// .method constructor <init>()V
+a=0;//     .locals 0
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 58
+a=0;//     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+a=0;// 
+a=0;//     #p0=(Reference,Landroid/support/v4/widget/EdgeEffectCompat$BaseEdgeEffectImpl;);
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// 
+a=0;// # virtual methods
+a=0;// .method public draw(Ljava/lang/Object;Landroid/graphics/Canvas;)Z
+a=0;//     .locals 1
+a=0;//     .param p1, "edgeEffect"    # Ljava/lang/Object;
+a=0;//     .param p2, "canvas"    # Landroid/graphics/Canvas;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 86
+a=0;//     const/4 v0, 0x0
+a=0;// 
+a=0;//     #v0=(Null);
+a=0;//     return v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public finish(Ljava/lang/Object;)V
+a=0;//     .locals 0
+a=0;//     .param p1, "edgeEffect"    # Ljava/lang/Object;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 71
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// .method public isFinished(Ljava/lang/Object;)Z
+a=0;//     .locals 1
+a=0;//     .param p1, "edgeEffect"    # Ljava/lang/Object;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 67
+a=0;//     const/4 v0, 0x1
+a=0;// 
+a=0;//     #v0=(One);
+a=0;//     return v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public newEdgeEffect(Landroid/content/Context;)Ljava/lang/Object;
+a=0;//     .locals 1
+a=0;//     .param p1, "context"    # Landroid/content/Context;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 60
+a=0;//     const/4 v0, 0x0
+a=0;// 
+a=0;//     #v0=(Null);
+a=0;//     return-object v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public onAbsorb(Ljava/lang/Object;I)Z
+a=0;//     .locals 1
+a=0;//     .param p1, "edgeEffect"    # Ljava/lang/Object;
+a=0;//     .param p2, "velocity"    # I
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 82
+a=0;//     const/4 v0, 0x0
+a=0;// 
+a=0;//     #v0=(Null);
+a=0;//     return v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public onPull(Ljava/lang/Object;F)Z
+a=0;//     .locals 1
+a=0;//     .param p1, "edgeEffect"    # Ljava/lang/Object;
+a=0;//     .param p2, "deltaDistance"    # F
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 74
+a=0;//     const/4 v0, 0x0
+a=0;// 
+a=0;//     #v0=(Null);
+a=0;//     return v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public onRelease(Ljava/lang/Object;)Z
+a=0;//     .locals 1
+a=0;//     .param p1, "edgeEffect"    # Ljava/lang/Object;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 78
+a=0;//     const/4 v0, 0x0
+a=0;// 
+a=0;//     #v0=(Null);
+a=0;//     return v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public setSize(Ljava/lang/Object;II)V
+a=0;//     .locals 0
+a=0;//     .param p1, "edgeEffect"    # Ljava/lang/Object;
+a=0;//     .param p2, "width"    # I
+a=0;//     .param p3, "height"    # I
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 64
+a=0;//     return-void
+a=0;// .end method
+}}

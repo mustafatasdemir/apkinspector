@@ -1,0 +1,47 @@
+package android.support.v4.app; class NotificationManagerCompatEclair { void a() { int a;
+a=0;// .class Landroid/support/v4/app/NotificationManagerCompatEclair;
+a=0;// .super Ljava/lang/Object;
+a=0;// .source "NotificationManagerCompatEclair.java"
+a=0;// 
+a=0;// 
+a=0;// # direct methods
+a=0;// .method constructor <init>()V
+a=0;//     .locals 0
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 22
+a=0;//     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+a=0;// 
+a=0;//     #p0=(Reference,Landroid/support/v4/app/NotificationManagerCompatEclair;);
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// .method static cancelNotification(Landroid/app/NotificationManager;Ljava/lang/String;I)V
+a=0;//     .locals 0
+a=0;//     .param p0, "notificationManager"    # Landroid/app/NotificationManager;
+a=0;//     .param p1, "tag"    # Ljava/lang/String;
+a=0;//     .param p2, "id"    # I
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 25
+a=0;//     invoke-virtual {p0, p1, p2}, Landroid/app/NotificationManager;->cancel(Ljava/lang/String;I)V
+a=0;// 
+a=0;//     .line 26
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// .method public static postNotification(Landroid/app/NotificationManager;Ljava/lang/String;ILandroid/app/Notification;)V
+a=0;//     .locals 0
+a=0;//     .param p0, "notificationManager"    # Landroid/app/NotificationManager;
+a=0;//     .param p1, "tag"    # Ljava/lang/String;
+a=0;//     .param p2, "id"    # I
+a=0;//     .param p3, "notification"    # Landroid/app/Notification;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 30
+a=0;//     invoke-virtual {p0, p1, p2, p3}, Landroid/app/NotificationManager;->notify(Ljava/lang/String;ILandroid/app/Notification;)V
+a=0;// 
+a=0;//     .line 31
+a=0;//     return-void
+a=0;// .end method
+}}

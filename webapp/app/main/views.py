@@ -35,22 +35,26 @@ def index():
 	return render_template("index.html")
 
 def initialize():
+	global apktool
 	decomp_thread = Decompile("SuperAwesomeContacts.apk")
 	decomp_thread.start()
 	decomp_thread.join()
 	apktool = APKtool()
+	print "apktool : "
+	print apktool
 
 
 @main.route('/smali', methods = ['GET'])
 def smali():
+	global apktool
 	initialize();
-	classname =""
+	classname ="/edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity/"
 	[flag, data] = apktool.getSmaliCode(classname)
         if flag == 0:
             smali_output = "Failed to show smali code"
         elif flag == 1:
             smali_output = data
-	return render_template("smali.html")
+	return render_template("smali.html", smali_output = smali_output)
 
 @main.route('/java', methods = ['GET'])
 def java():

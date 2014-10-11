@@ -1,0 +1,87 @@
+package android.support.v4.hardware.display; class DisplayManagerJellybeanMr1 { void a() { int a;
+a=0;// .class final Landroid/support/v4/hardware/display/DisplayManagerJellybeanMr1;
+a=0;// .super Ljava/lang/Object;
+a=0;// .source "DisplayManagerJellybeanMr1.java"
+a=0;// 
+a=0;// 
+a=0;// # direct methods
+a=0;// .method constructor <init>()V
+a=0;//     .locals 0
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 22
+a=0;//     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+a=0;// 
+a=0;//     #p0=(Reference,Landroid/support/v4/hardware/display/DisplayManagerJellybeanMr1;);
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// .method public static getDisplay(Ljava/lang/Object;I)Landroid/view/Display;
+a=0;//     .locals 1
+a=0;//     .param p0, "displayManagerObj"    # Ljava/lang/Object;
+a=0;//     .param p1, "displayId"    # I
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 28
+a=0;//     check-cast p0, Landroid/hardware/display/DisplayManager;
+a=0;// 
+a=0;//     .end local p0    # "displayManagerObj":Ljava/lang/Object;
+a=0;//     invoke-virtual {p0, p1}, Landroid/hardware/display/DisplayManager;->getDisplay(I)Landroid/view/Display;
+a=0;// 
+a=0;//     move-result-object v0
+a=0;// 
+a=0;//     #v0=(Reference,Landroid/view/Display;);
+a=0;//     return-object v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public static getDisplayManager(Landroid/content/Context;)Ljava/lang/Object;
+a=0;//     .locals 1
+a=0;//     .param p0, "context"    # Landroid/content/Context;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 24
+a=0;//     const-string v0, "display"
+a=0;// 
+a=0;//     #v0=(Reference,Ljava/lang/String;);
+a=0;//     invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+a=0;// 
+a=0;//     move-result-object v0
+a=0;// 
+a=0;//     return-object v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public static getDisplays(Ljava/lang/Object;)[Landroid/view/Display;
+a=0;//     .locals 1
+a=0;//     .param p0, "displayManagerObj"    # Ljava/lang/Object;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 32
+a=0;//     check-cast p0, Landroid/hardware/display/DisplayManager;
+a=0;// 
+a=0;//     .end local p0    # "displayManagerObj":Ljava/lang/Object;
+a=0;//     invoke-virtual {p0}, Landroid/hardware/display/DisplayManager;->getDisplays()[Landroid/view/Display;
+a=0;// 
+a=0;//     move-result-object v0
+a=0;// 
+a=0;//     #v0=(Reference,[Landroid/view/Display;);
+a=0;//     return-object v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public static getDisplays(Ljava/lang/Object;Ljava/lang/String;)[Landroid/view/Display;
+a=0;//     .locals 1
+a=0;//     .param p0, "displayManagerObj"    # Ljava/lang/Object;
+a=0;//     .param p1, "category"    # Ljava/lang/String;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 36
+a=0;//     check-cast p0, Landroid/hardware/display/DisplayManager;
+a=0;// 
+a=0;//     .end local p0    # "displayManagerObj":Ljava/lang/Object;
+a=0;//     invoke-virtual {p0, p1}, Landroid/hardware/display/DisplayManager;->getDisplays(Ljava/lang/String;)[Landroid/view/Display;
+a=0;// 
+a=0;//     move-result-object v0
+a=0;// 
+a=0;//     #v0=(Reference,[Landroid/view/Display;);
+a=0;//     return-object v0
+a=0;// .end method
+}}

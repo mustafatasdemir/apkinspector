@@ -6,10 +6,13 @@ import Global
 # return 1: success ; return 0: fail
 def callAPKtool(filename):
     outputPath = sys.path[0] + "/temp/ApktoolOutput"
-    cmd = "apktool d -d -f " + filename + " " + outputPath
+    print "call apktool " + filename
+    cmd = "apktool d -d -f " + filename + " -o " + outputPath
+    print "finish calling apktool " + filename
     if os.system(cmd) !=0:
         return  0
     else:
+        print "SUCCESS finish calling apktool " + filename
         return  1
 
 
@@ -44,16 +47,17 @@ class APKtool:
             return [0, ""]
         print className
             
-        className = className[1:-1] + ".smali"
+        className = className[1:-1] + ".java"
         # this is the first time to call method "getSmaliCode"
         if self.firstFlag == 0:
             self.firstFlag ==1
             self.lastClassName = className
             classPath = sys.path[0] + "/temp/ApktoolOutput/smali/" + className
+            print "class path: " + classPath
             try:
                 data = open(classPath, "r").read()
-            except IOError:
-                print "IOError"
+            except IOError, e:
+                print str(e)
                 data = ""
             return [1, data]
         

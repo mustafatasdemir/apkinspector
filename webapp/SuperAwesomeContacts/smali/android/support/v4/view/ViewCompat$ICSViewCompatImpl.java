@@ -1,0 +1,177 @@
+package android.support.v4.view; class ViewCompat$ICSViewCompatImpl { void a() { int a;
+a=0;// .class Landroid/support/v4/view/ViewCompat$ICSViewCompatImpl;
+a=0;// .super Landroid/support/v4/view/ViewCompat$HCViewCompatImpl;
+a=0;// .source "ViewCompat.java"
+a=0;// 
+a=0;// 
+a=0;// # annotations
+a=0;// .annotation system Ldalvik/annotation/EnclosingClass;
+a=0;//     value = Landroid/support/v4/view/ViewCompat;
+a=0;// .end annotation
+a=0;// 
+a=0;// .annotation system Ldalvik/annotation/InnerClass;
+a=0;//     accessFlags = 0x8
+a=0;//     name = "ICSViewCompatImpl"
+a=0;// .end annotation
+a=0;// 
+a=0;// 
+a=0;// # direct methods
+a=0;// .method constructor <init>()V
+a=0;//     .locals 0
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 811
+a=0;//     invoke-direct {p0}, Landroid/support/v4/view/ViewCompat$HCViewCompatImpl;-><init>()V
+a=0;// 
+a=0;//     #p0=(Reference,Landroid/support/v4/view/ViewCompat$ICSViewCompatImpl;);
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// 
+a=0;// # virtual methods
+a=0;// .method public animate(Landroid/view/View;)Landroid/support/v4/view/ViewPropertyAnimatorCompat;
+a=0;//     .locals 2
+a=0;//     .param p1, "view"    # Landroid/view/View;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 838
+a=0;//     iget-object v1, p0, Landroid/support/v4/view/ViewCompat$ICSViewCompatImpl;->mViewPropertyAnimatorCompatMap:Ljava/util/WeakHashMap;
+a=0;// 
+a=0;//     #v1=(Reference,Ljava/util/WeakHashMap;);
+a=0;//     if-nez v1, :cond_0
+a=0;// 
+a=0;//     .line 839
+a=0;//     new-instance v1, Ljava/util/WeakHashMap;
+a=0;// 
+a=0;//     #v1=(UninitRef,Ljava/util/WeakHashMap;);
+a=0;//     invoke-direct {v1}, Ljava/util/WeakHashMap;-><init>()V
+a=0;// 
+a=0;//     #v1=(Reference,Ljava/util/WeakHashMap;);
+a=0;//     iput-object v1, p0, Landroid/support/v4/view/ViewCompat$ICSViewCompatImpl;->mViewPropertyAnimatorCompatMap:Ljava/util/WeakHashMap;
+a=0;// 
+a=0;//     .line 842
+a=0;//     :cond_0
+a=0;//     iget-object v1, p0, Landroid/support/v4/view/ViewCompat$ICSViewCompatImpl;->mViewPropertyAnimatorCompatMap:Ljava/util/WeakHashMap;
+a=0;// 
+a=0;//     invoke-virtual {v1, p1}, Ljava/util/WeakHashMap;->get(Ljava/lang/Object;)Ljava/lang/Object;
+a=0;// 
+a=0;//     move-result-object v0
+a=0;// 
+a=0;//     #v0=(Reference,Ljava/lang/Object;);
+a=0;//     check-cast v0, Landroid/support/v4/view/ViewPropertyAnimatorCompat;
+a=0;// 
+a=0;//     .line 843
+a=0;//     .local v0, "vpa":Landroid/support/v4/view/ViewPropertyAnimatorCompat;
+a=0;//     if-nez v0, :cond_1
+a=0;// 
+a=0;//     .line 844
+a=0;//     new-instance v0, Landroid/support/v4/view/ViewPropertyAnimatorCompat;
+a=0;// 
+a=0;//     .end local v0    # "vpa":Landroid/support/v4/view/ViewPropertyAnimatorCompat;
+a=0;//     #v0=(UninitRef,Landroid/support/v4/view/ViewPropertyAnimatorCompat;);
+a=0;//     invoke-direct {v0, p1}, Landroid/support/v4/view/ViewPropertyAnimatorCompat;-><init>(Landroid/view/View;)V
+a=0;// 
+a=0;//     .line 845
+a=0;//     .restart local v0    # "vpa":Landroid/support/v4/view/ViewPropertyAnimatorCompat;
+a=0;//     #v0=(Reference,Landroid/support/v4/view/ViewPropertyAnimatorCompat;);
+a=0;//     iget-object v1, p0, Landroid/support/v4/view/ViewCompat$ICSViewCompatImpl;->mViewPropertyAnimatorCompatMap:Ljava/util/WeakHashMap;
+a=0;// 
+a=0;//     invoke-virtual {v1, p1, v0}, Ljava/util/WeakHashMap;->put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+a=0;// 
+a=0;//     .line 847
+a=0;//     :cond_1
+a=0;//     return-object v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public canScrollHorizontally(Landroid/view/View;I)Z
+a=0;//     .locals 1
+a=0;//     .param p1, "v"    # Landroid/view/View;
+a=0;//     .param p2, "direction"    # I
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 814
+a=0;//     invoke-static {p1, p2}, Landroid/support/v4/view/ViewCompatICS;->canScrollHorizontally(Landroid/view/View;I)Z
+a=0;// 
+a=0;//     move-result v0
+a=0;// 
+a=0;//     #v0=(Boolean);
+a=0;//     return v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public canScrollVertically(Landroid/view/View;I)Z
+a=0;//     .locals 1
+a=0;//     .param p1, "v"    # Landroid/view/View;
+a=0;//     .param p2, "direction"    # I
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 818
+a=0;//     invoke-static {p1, p2}, Landroid/support/v4/view/ViewCompatICS;->canScrollVertically(Landroid/view/View;I)Z
+a=0;// 
+a=0;//     move-result v0
+a=0;// 
+a=0;//     #v0=(Boolean);
+a=0;//     return v0
+a=0;// .end method
+a=0;// 
+a=0;// .method public onInitializeAccessibilityEvent(Landroid/view/View;Landroid/view/accessibility/AccessibilityEvent;)V
+a=0;//     .locals 0
+a=0;//     .param p1, "v"    # Landroid/view/View;
+a=0;//     .param p2, "event"    # Landroid/view/accessibility/AccessibilityEvent;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 826
+a=0;//     invoke-static {p1, p2}, Landroid/support/v4/view/ViewCompatICS;->onInitializeAccessibilityEvent(Landroid/view/View;Landroid/view/accessibility/AccessibilityEvent;)V
+a=0;// 
+a=0;//     .line 827
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// .method public onInitializeAccessibilityNodeInfo(Landroid/view/View;Landroid/support/v4/view/accessibility/AccessibilityNodeInfoCompat;)V
+a=0;//     .locals 1
+a=0;//     .param p1, "v"    # Landroid/view/View;
+a=0;//     .param p2, "info"    # Landroid/support/v4/view/accessibility/AccessibilityNodeInfoCompat;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 830
+a=0;//     invoke-virtual {p2}, Landroid/support/v4/view/accessibility/AccessibilityNodeInfoCompat;->getInfo()Ljava/lang/Object;
+a=0;// 
+a=0;//     move-result-object v0
+a=0;// 
+a=0;//     #v0=(Reference,Ljava/lang/Object;);
+a=0;//     invoke-static {p1, v0}, Landroid/support/v4/view/ViewCompatICS;->onInitializeAccessibilityNodeInfo(Landroid/view/View;Ljava/lang/Object;)V
+a=0;// 
+a=0;//     .line 831
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// .method public onPopulateAccessibilityEvent(Landroid/view/View;Landroid/view/accessibility/AccessibilityEvent;)V
+a=0;//     .locals 0
+a=0;//     .param p1, "v"    # Landroid/view/View;
+a=0;//     .param p2, "event"    # Landroid/view/accessibility/AccessibilityEvent;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 822
+a=0;//     invoke-static {p1, p2}, Landroid/support/v4/view/ViewCompatICS;->onPopulateAccessibilityEvent(Landroid/view/View;Landroid/view/accessibility/AccessibilityEvent;)V
+a=0;// 
+a=0;//     .line 823
+a=0;//     return-void
+a=0;// .end method
+a=0;// 
+a=0;// .method public setAccessibilityDelegate(Landroid/view/View;Landroid/support/v4/view/AccessibilityDelegateCompat;)V
+a=0;//     .locals 1
+a=0;//     .param p1, "v"    # Landroid/view/View;
+a=0;//     .param p2, "delegate"    # Landroid/support/v4/view/AccessibilityDelegateCompat;
+a=0;// 
+a=0;//     .prologue
+a=0;//     .line 834
+a=0;//     invoke-virtual {p2}, Landroid/support/v4/view/AccessibilityDelegateCompat;->getBridge()Ljava/lang/Object;
+a=0;// 
+a=0;//     move-result-object v0
+a=0;// 
+a=0;//     #v0=(Reference,Ljava/lang/Object;);
+a=0;//     invoke-static {p1, v0}, Landroid/support/v4/view/ViewCompatICS;->setAccessibilityDelegate(Landroid/view/View;Ljava/lang/Object;)V
+a=0;// 
+a=0;//     .line 835
+a=0;//     return-void
+a=0;// .end method
+}}
