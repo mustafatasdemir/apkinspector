@@ -1,1 +1,1 @@
-/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/_abcoll.py
+/usr/lib/python2.7/_abcoll.py

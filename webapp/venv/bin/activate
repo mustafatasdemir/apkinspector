@@ -39,7 +39,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/ironstone/Github/apkinspector/webapp/venv"
+VIRTUAL_ENV="/home/ironstone/Desktop/apkinspector/webapp/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

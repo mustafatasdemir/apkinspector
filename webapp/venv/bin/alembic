@@ -1,4 +1,4 @@
-#!/Users/ironstone/Github/apkinspector/webapp/venv/bin/python
+#!/home/ironstone/Desktop/apkinspector/webapp/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'alembic==0.6.5','console_scripts','alembic'
 __requires__ = 'alembic==0.6.5'
 import sys

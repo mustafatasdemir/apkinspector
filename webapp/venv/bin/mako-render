@@ -1,4 +1,4 @@
-#!/Users/ironstone/Github/apkinspector/webapp/venv/bin/python
+#!/home/ironstone/Desktop/apkinspector/webapp/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'Mako==1.0.0','console_scripts','mako-render'
 __requires__ = 'Mako==1.0.0'
 import sys
