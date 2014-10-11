@@ -12,8 +12,9 @@
 
 
 # Import Statements
+import os
 from datetime import datetime
-from flask import render_template, session, redirect, url_for, \
+from flask import Flask, render_template, session, redirect, url_for, \
 current_app, request, abort
 from . import main
 from .. import db
@@ -23,20 +24,29 @@ from ..helpers.APKInfo import APK
 
 apktool = None
 
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = "."
+
 def session_exists():
 	if "username" in session:
 		return True
 
-@main.route('/', methods = ['GET'])
-@main.route('/index', methods = ['GET'])
+@main.route('/', methods = ['GET', 'POST'])
+@main.route('/index', methods = ['GET', 'POST'])
 def index():
-	a = 5
-	
-	return render_template("index.html")
+	result = None
+	if request.method == 'POST':
+		file = request.files['file']
+		filename = file.filename
+		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		# "SuperAwesomeContacts.apk"
+		initialize(filename);
+		result = "OK"
+	return render_template("index.html", result = result)
 
-def initialize():
+def initialize(filename):
 	global apktool
-	decomp_thread = Decompile("SuperAwesomeContacts.apk")
+	decomp_thread = Decompile(filename)
 	decomp_thread.start()
 	decomp_thread.join()
 	apktool = APKtool()
@@ -46,8 +56,10 @@ def initialize():
 
 @main.route('/smali', methods = ['GET'])
 def smali():
-	global apktool
-	initialize();
+	global apktool	
+	if apktool == None:
+		return redirect('/index')
+
 	classname ="/edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity/"
 	[flag, data] = apktool.getSmaliCode(classname)
         if flag == 0:
@@ -58,7 +70,10 @@ def smali():
 
 @main.route('/java', methods = ['GET'])
 def java():
-	inputpath = "temp/java/" + ""
+	if apktool == None:
+		return redirect('/index')
+
+	inputpath = "temp/java/" + "edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
 	try:
 	  	data = open(inputpath, "r").read()
 	except IOError:
