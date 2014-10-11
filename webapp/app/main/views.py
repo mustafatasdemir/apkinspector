@@ -34,14 +34,14 @@ def session_exists():
 @main.route('/', methods = ['GET', 'POST'])
 @main.route('/index', methods = ['GET', 'POST'])
 def index():
-	result = None
+	result = False
 	if request.method == 'POST':
 		file = request.files['file']
 		filename = file.filename
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 		# "SuperAwesomeContacts.apk"
 		initialize(filename);
-		result = "OK"
+		result = True
 	return render_template("index.html", result = result)
 
 def initialize(filename):
