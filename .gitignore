@@ -4,3 +4,5 @@
 venv/*
 out/*
 temp/*
+
+*.log
