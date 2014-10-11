@@ -3,29 +3,11 @@ import sys
 import time
 import os
 
-if sys.path[0] =="":
-    SYSPATH = sys.path[1]
-else:
-    SYSPATH = sys.path[0]
+sys.path.append(sys.path[0]+"/tools/androguard/")
 
-if sys.path[0] == "":
-    sys.path.append(sys.path[1]+"/androguard/")
-    PATH_INSTALL = sys.path[1]+"/androguard"
-else:
-    sys.path.append(sys.path[0]+"/androguard/")
-    PATH_INSTALL = sys.path[0]+"/androguard"
+print sys.path
 
-sys.path.append(PATH_INSTALL + "./")
-sys.path.append(PATH_INSTALL + "/core")
-sys.path.append(PATH_INSTALL + "/core/bytecodes")
-sys.path.append(PATH_INSTALL + "/core/predicates")
-sys.path.append(PATH_INSTALL + "/core/analysis")
-sys.path.append(PATH_INSTALL + "/core/vm")
-sys.path.append(PATH_INSTALL + "/core/wm")
-sys.path.append(PATH_INSTALL + "/core/protection")
-sys.path.append(PATH_INSTALL + "/classification")
-
-import androguard, androlyze
+import androlyze
 
 class APK:
     filename = None
