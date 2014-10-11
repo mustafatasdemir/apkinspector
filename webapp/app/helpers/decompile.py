@@ -14,6 +14,7 @@ class Decompile(threading.Thread):
         self.filename = filename
         
     def run(self):
+        print "decompile run"
         Global.APK = APK(self.filename)
         if Global.APK.isVaildAPK():
             # self.progress.step = 599900
@@ -26,6 +27,7 @@ class Decompile(threading.Thread):
             # if Global.CONFIG["Java"] == 1:
                 # print "set JAD flag"
             Global.FLAG_JAD = 0
+            print "JAD run"
             Global.FLAG_JAD=JAD.decompile(self.filename)
             # if self.progress.step <= 800000:
             #     self.progress.step = 800000

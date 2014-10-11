@@ -29,7 +29,7 @@ class APKtool:
             print "apktool fail3"
             return [0, ""]
         print "apktool success 4"
-        path = SYSPATH + "/temp/ApktoolOutput/AndroidManifest.xml"
+        path = sys.path[0] + "/temp/ApktoolOutput/AndroidManifest.xml"
         try:
             data = open(path, "r").read()
         except IOError:
@@ -49,7 +49,7 @@ class APKtool:
         if self.firstFlag == 0:
             self.firstFlag ==1
             self.lastClassName = className
-            classPath = SYSPATH + "/temp/ApktoolOutput/smali/" + className
+            classPath = sys.path[0] + "/temp/ApktoolOutput/smali/" + className
             try:
                 data = open(classPath, "r").read()
             except IOError:
@@ -63,6 +63,6 @@ class APKtool:
                 return [0, ""] 
             else:
                 self.lastClassName = className
-                classPath = SYSPATH + "/temp/ApktoolOutput/" + className
+                classPath = sys.path[0] + "/temp/ApktoolOutput/" + className
                 data = open(classPath, "r").read()
                 return [1, data]

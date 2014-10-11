@@ -4,5 +4,5 @@
 venv/*
 out/*
 temp/*
-
+webapp/temp/*
 *.log

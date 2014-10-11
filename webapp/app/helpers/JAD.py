@@ -5,7 +5,7 @@ import zipfile
 # delete all files and dirs in the "./temp/" dictionary
 # return 0: success;
 def clear():
-    cmd = "temp/*"
+    cmd = "rm -rf " + " temp/*"
     return os.system(cmd)
 
 # use the dex2jar to generate the .jar file.
@@ -19,10 +19,10 @@ def dex2jar(filename):
     
     newfilename = os.path.split(filename)[-1]
     newfilename = os.path.splitext(newfilename)[0] + "_dex2jar.jar"
-    cmd2 = "mv " + os.path.dirname(filename) + "/" + newfilename + " " + "temp/"
+    cmd2 = "mv " + newfilename + " " + "temp/"
     if os.system(cmd2) !=0:
         return 0
-        
+    print "start unzip"
     if unzip("temp/" + newfilename) != 0:
         return 0
     
@@ -45,7 +45,8 @@ def decompile(filename):
     if dex2jar(filename) != 1:
         return 0
     
-    cmd = "tools/jad158e.linux.static/jad -o -r -sjava -d" + "temp/java " + "temp/unzip/**/*.class"
+    print "jad decompile"
+    cmd = "tools/jad158e.linux.static/jad -o -r -sjava -d" + " temp/java " + "temp/unzip/**/*.class"
     if os.system(cmd) != 0:
         return 0
  
