@@ -47,7 +47,7 @@ def decompile(filename):
     
     print "jad decompile"
     # cmd = "tools/jad158e.linux.static/jad -o -r -sjava -d" + " temp/java " + "temp/unzip/**/*.class"
-    cmd = "tools/jad158g.mac.intel/jad -o -r -sjava -d" + " temp/java " + "temp/unzip/**/*.class"
+    cmd = "tools/jad158e.linux.static/jad -o -r -sjava -d" + " temp/java " + "temp/unzip/**/*.class"
     
     if os.system(cmd) != 0:
         return 0

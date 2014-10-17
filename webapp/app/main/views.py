@@ -76,7 +76,8 @@ def java():
 	inputpath = "temp/java/" + "edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
 	try:
 	  	data = open(inputpath, "r").read()
-	except IOError:
+	except IOError, e:
+		print str(e)
 		print "IOError"
 		data = None
 
