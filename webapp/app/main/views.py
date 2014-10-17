@@ -52,6 +52,8 @@ def initialize(filename):
 	apktool = APKtool()
 	print "apktool : "
 	print apktool
+	apk = APK("SuperAwesomeContacts.apk")
+
 
 
 @main.route('/smali', methods = ['GET'])
@@ -88,9 +90,19 @@ def java():
 
 	return render_template("java.html", java_output = java_output)
 
+@main.route('/manifest', methods = ['GET'])
+def manifest():
+	permissions = None
+	permission_count = None
+	if apk.isVaildAPK():
+		(permissions, permission_count) = apk.getPermissions()
+		permissions = permissions.split("\n")
+		
+	return render_template("manifest.html", permissions = permissions)
+
+
 @main.route('/trial')
 def trial():
-	apk = APK("SuperAwesomeContacts.apk")
 	permissions = None
 	permission_count = None
 	is_valid = None
