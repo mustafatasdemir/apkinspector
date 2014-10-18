@@ -94,9 +94,8 @@ def java():
 def manifest():
 	permissions = None
 	permission_count = None
-	if apk.isVaildAPK():
-		(permissions, permission_count) = apk.getPermissions()
-		permissions = permissions.split("\n")
+	(permissions, permission_count) = apk.getPermissions()
+	permissions = permissions.split("\n")
 		
 	return render_template("manifest.html", permissions = permissions)
 
