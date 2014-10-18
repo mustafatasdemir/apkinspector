@@ -26,6 +26,11 @@ apktool = None
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "."
+#apk = APK("SuperAwesomeContacts.apk")
+#permissions = None
+#permission_count = None
+#(permissions, permission_count) = apk.getPermissions()
+#permissions = permissions.split("\n")
 
 def session_exists():
 	if "username" in session:
@@ -52,9 +57,12 @@ def initialize(filename):
 	apktool = APKtool()
 	print "apktool : "
 	print apktool
-	apk = APK("SuperAwesomeContacts.apk")
-
-
+	apk = APK(filename)
+	permissions = None
+	permission_count = None
+	(permissions, permission_count) = apk.getPermissions()
+	permissions = permissions.split("\n")
+	
 
 @main.route('/smali', methods = ['GET'])
 def smali():
@@ -92,10 +100,6 @@ def java():
 
 @main.route('/manifest', methods = ['GET'])
 def manifest():
-	permissions = None
-	permission_count = None
-	(permissions, permission_count) = apk.getPermissions()
-	permissions = permissions.split("\n")
 		
 	return render_template("manifest.html", permissions = permissions)
 
