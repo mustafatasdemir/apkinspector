@@ -52,7 +52,7 @@ def initialize(filename):
 	apktool = APKtool()
 	print "apktool : "
 	print apktool
-	apk = APK("SuperAwesomeContacts.apk")
+	#apk = APK("SuperAwesomeContacts.apk")
 
 
 
@@ -92,10 +92,10 @@ def java():
 
 @main.route('/manifest', methods = ['GET'])
 def manifest():
-	permissions = None
-	permission_count = None
-	(permissions, permission_count) = apk.getPermissions()
-	permissions = permissions.split("\n")
+	global apktool	
+	if apktool == None:
+		return redirect('/index')
+	permissions = apktool.getManifest()
 		
 	return render_template("manifest.html", permissions = permissions)
 
