@@ -20,9 +20,12 @@ from . import main
 from .. import db
 from ..helpers.decompile import Decompile
 from ..helpers.APKtool import APKtool
-from ..helpers.APKInfo import APK
+from ..helpers.APKInfo import *
 
 apktool = None
+apk = None
+vm = None
+vmx = None
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "."
@@ -45,15 +48,24 @@ def index():
 	return render_template("index.html", result = result)
 
 def initialize(filename):
-	global apktool
+	global apktool, apk, vm, vmx
 	decomp_thread = Decompile(filename)
 	decomp_thread.start()
 	decomp_thread.join()
+	apk = APK(filename)
+	vm = DalvikVMFormat(apk.getDex())
+	print len(vm.get_classes_names())
+	vmx = analysis.VMAnalysis(vm)
 	apktool = APKtool()
 	print "apktool : "
 	print apktool
 	#apk = APK("SuperAwesomeContacts.apk")
 
+
+@main.route('/classes', methods = ['GET'])
+def classes():
+	global vm
+	return render_template("classes.html", classes = vm.get_classes_names())
 
 
 @main.route('/smali', methods = ['GET'])
