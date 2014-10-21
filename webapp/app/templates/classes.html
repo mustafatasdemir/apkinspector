@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+<!-- Head Block-->
+{% block head %}
+
+	{{ super() }}
+
+{% endblock %}
+<!-- End of Head Block-->
+
+{% block title %}
+
+	{{ super() }}
+
+{% endblock %}
+
+<!-- Scripts Block-->
+{% block scripts %}
+
+	{{ super() }}
+
+{% endblock %}
+<!-- End of Scripts Block-->
+
+<!-- Body Block-->
+{% block body %}
+
+<h1>Classes</h1>
+
+
+
+{% for class in classes %}
+	<b>{{class}}</b><br/>
+{% endfor %}
+<br/>
+
+
+
+{% endblock %}
+<!-- End of Body Block-->
