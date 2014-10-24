@@ -1,0 +1,14 @@
+<div class="container">
+	Classes!
+</div>​
+
+
+
+<form action=""  method='POST'>
+{% for o in classes_output %}
+ <tr><td>   
+    <input class="button1" type="submit" name = "class" value="{{ o }}" width="500px">
+   </td></tr>
+   <br>
+{% endfor %}
+</form>

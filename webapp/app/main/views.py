@@ -13,6 +13,8 @@
 
 # Import Statements
 import os
+import sys
+import pickle
 from datetime import datetime
 from flask import Flask, render_template, session, redirect, url_for, \
 current_app, request, abort
@@ -21,11 +23,15 @@ from .. import db
 from ..helpers.decompile import Decompile
 from ..helpers.APKtool import APKtool
 from ..helpers.APKInfo import APK
+from ..helpers.GetMethods import GetDVM
+
+
 
 apktool = None
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "."
+app.config['SECRET_KEY'] = 'F34TF$($e34D';
 
 def session_exists():
 	if "username" in session:
@@ -38,9 +44,11 @@ def index():
 	if request.method == 'POST':
 		file = request.files['file']
 		filename = file.filename
+		filetype = file.filename.split('.', 1)[1]
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 		# "SuperAwesomeContacts.apk"
 		initialize(filename);
+		session['filename'] = str(filename)
 		result = True
 	return render_template("index.html", result = result)
 
@@ -123,9 +131,52 @@ def trial():
 	else:
 		abort(500)
 
+
+@main.route('/classes', methods = ['GET','POST'])
+def classes():
+	global apktool	
+	if apktool == None:
+		return redirect('/index')
+	if request.method == 'POST':
+		studio = (request.form["class"])
+		session['Class'] = studio[1:]
+		print 'Chosen Class'
+		print studio[1:]
+		result = True
+		return render_template("index.html", result = result)
+	Classes=None
+	#get the package name and filter classes only with that package name
+	apk = APK(session['filename'])
+	package = apk.getPackage()
+	countSlash = package.count('.',0,len(package));
+	pattern = package.replace('.','/',countSlash);
+	methodget = GetDVM(session['filename'])
+	Classes = methodget.get_DALVIK_VM().get_classes_names()
+	PackageClasses=[]
+	for i in Classes:
+		if i[1:].startswith(pattern):
+			PackageClasses.append(i[1:])
+	
+    #print PackageClasses
+	return render_template("classes.html", classes_output = PackageClasses)
+
+@main.route('/strings', methods = ['GET'])
+def strings():
+	global apktool	
+	if apktool == None:
+		return redirect('/index')
+	Strings=None
+	methodget = GetDVM(session['filename'])
+	Strings = methodget.get_DALVIK_VM().get_strings()
+	return render_template("strings.html", strings_output = Strings)
+
+
+
 @main.route('/apk')
 def apk():
 	return render_template("deneme.html")
+
+
 
 @main.route('/logout')
 def logout():
