@@ -28,9 +28,10 @@
 <h1>APK Inspector</h1>
 
 
-Android Manifest
-{% for line in manifestdata %}
-	<b>{{line}}</b><br/>
+Permissions
+<br/>
+{% for permission in permissions %}
+	<b>{{permission}}</b><br/>
 {% endfor %}
 <br/>
 
