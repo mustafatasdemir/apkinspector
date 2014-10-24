@@ -26,11 +26,7 @@ apktool = None
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "."
-#apk = APK("SuperAwesomeContacts.apk")
-#permissions = None
-#permission_count = None
-#(permissions, permission_count) = apk.getPermissions()
-#permissions = permissions.split("\n")
+
 
 def session_exists():
 	if "username" in session:
@@ -46,6 +42,7 @@ def index():
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 		# "SuperAwesomeContacts.apk"
 		initialize(filename);
+		session['filename'] = str(filename)
 		result = True
 	return render_template("index.html", result = result)
 
@@ -57,11 +54,6 @@ def initialize(filename):
 	apktool = APKtool()
 	print "apktool : "
 	print apktool
-	apk = APK(filename)
-	permissions = None
-	permission_count = None
-	(permissions, permission_count) = apk.getPermissions()
-	permissions = permissions.split("\n")
 	
 
 @main.route('/smali', methods = ['GET'])
@@ -98,10 +90,23 @@ def java():
 
 	return render_template("java.html", java_output = java_output)
 
+@main.route('/permissions', methods = ['GET'])
+def permissions():
+	apk = APK(session['filename'])
+	permissions = None
+	permission_count = None
+	(permissions, permission_count) = apk.getPermissions()	
+	permissions = permissions.split('\n')
+	return render_template("permissions.html", permissions = permissions)
+
 @main.route('/manifest', methods = ['GET'])
 def manifest():
-		
-	return render_template("manifest.html", permissions = permissions)
+	#apk = APK(session['filename'])
+	manifest = apktool.getManifest()
+	#manifest_count = None
+	#(manifest_count, manifest) = apk.getPermissions()	
+	return render_template("manifest.html", manifestdata = manifest)
+
 
 
 @main.route('/trial')
