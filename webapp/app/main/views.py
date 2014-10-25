@@ -61,8 +61,6 @@ def initialize(filename):
 	apktool = APKtool()
 	print "apktool : "
 	print apktool
-<<<<<<< HEAD
-	#apk = APK("SuperAwesomeContacts.apk")
 
 
 @main.route('/classes', methods = ['GET'])
@@ -70,9 +68,6 @@ def classes():
 	global vm
 	return render_template("classes.html", classes = vm.get_classes_names())
 
-=======
-	
->>>>>>> divyac
 
 @main.route('/smali', methods = ['GET'])
 def smali():
@@ -108,16 +103,14 @@ def java():
 
 	return render_template("java.html", java_output = java_output)
 
-<<<<<<< HEAD
 @main.route('/manifest', methods = ['GET'])
-def manifest():
+def androidmanifest():
 	global apktool	
 	if apktool == None:
 		return redirect('/index')
-	permissions = apktool.getManifest()
-		
-	return render_template("manifest.html", permissions = permissions)
-=======
+	manifestdata = apktool.getManifest()
+	return render_template("manifest.html", manifestdata = manifestdata)
+
 @main.route('/permissions', methods = ['GET'])
 def permissions():
 	apk = APK(session['filename'])
@@ -134,8 +127,6 @@ def manifest():
 	#manifest_count = None
 	#(manifest_count, manifest) = apk.getPermissions()	
 	return render_template("manifest.html", manifestdata = manifest)
-
->>>>>>> divyac
 
 
 @main.route('/trial')
