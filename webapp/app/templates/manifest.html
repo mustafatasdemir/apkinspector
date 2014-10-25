@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 <!-- Head Block-->
@@ -26,26 +25,16 @@
 <!-- Body Block-->
 {% block body %}
 
-
-<div class="container">
-	Classes!
-</div>​
+<h1>APK Inspector</h1>
 
 
-
-<form action=""  method='POST'>
-{% for o in classes_output %}
- <tr><td>   
-    <input class="button1" type="submit" name = "class" value="{{ o }}" width="500px">
-   </td></tr>
-   <br>
+Android Manifest
+{% for line in manifestdata %}
+	<b>{{line}}</b><br/>
 {% endfor %}
-</form>
-
 <br/>
 
 
 
 {% endblock %}
 <!-- End of Body Block-->
-

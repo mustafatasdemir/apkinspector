@@ -1,6 +1,7 @@
 *.pyc
 *.DS_Store
 *.log
+*.project
 venv/*
 out/*
 temp/*

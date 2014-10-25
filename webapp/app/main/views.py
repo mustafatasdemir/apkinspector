@@ -22,16 +22,22 @@ from . import main
 from .. import db
 from ..helpers.decompile import Decompile
 from ..helpers.APKtool import APKtool
-from ..helpers.APKInfo import APK
+
+from ..helpers.APKInfo import *
 from ..helpers.GetMethods import GetDVM
 
 
 
+
 apktool = None
+apk = None
+vm = None
+vmx = None
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "."
 app.config['SECRET_KEY'] = 'F34TF$($e34D';
+
 
 def session_exists():
 	if "username" in session:
@@ -57,9 +63,13 @@ def initialize(filename):
 	decomp_thread = Decompile(filename)
 	decomp_thread.start()
 	decomp_thread.join()
+	
 	apktool = APKtool()
 	print "apktool : "
 	print apktool
+
+
+
 
 
 @main.route('/smali', methods = ['GET'])
@@ -96,9 +106,28 @@ def java():
 
 	return render_template("java.html", java_output = java_output)
 
+@main.route('/manifest', methods = ['GET'])
+def androidmanifest():
+	global apktool	
+	if apktool == None:
+		return redirect('/index')
+	manifestdata = apktool.getManifest()
+	return render_template("manifest.html", manifestdata = manifestdata)
+
+@main.route('/permissions', methods = ['GET'])
+def permissions():
+	apk = APK(session['filename'])
+	permissions = None
+	permission_count = None
+	(permissions, permission_count) = apk.getPermissions()	
+	permissions = permissions.split('\n')
+	return render_template("permissions.html", permissions = permissions)
+
+
+
+
 @main.route('/trial')
 def trial():
-	apk = APK("SuperAwesomeContacts.apk")
 	permissions = None
 	permission_count = None
 	is_valid = None
