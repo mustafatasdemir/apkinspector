@@ -1,5 +1,4 @@
 import sys
-from flask import session
 
 if sys.path[0] == "":
 	sys.path.append(sys.path[1]+"/tools/androguard/androguard")
@@ -100,15 +99,15 @@ class CLASS:
     def get_methodInvoke(self):
         methodInvokeList = []
         allMethods = self.vm.get_methods()
-        #import Global
+        import Global
         for m in allMethods:
 #Yuan :build callinout tree
            
-            invokingMethod = m.get_class_name() + " " + m.get_descriptor() +"," + m.get_name()
-            if (session['NAV_NO'] == 1):
-                print "name first method"
-                session['FM'] = invokingMethod
-                
+            # invokingMethod = m.get_class_name() + " " + m.get_descriptor() +"," + m.get_name()
+            invokingMethod = m.get_class_name() + "->" + m.get_name()+ m.get_descriptor()
+            # print "++++++ invokingMethod ++++++"
+            # print invokingMethod
+            Global.FM = invokingMethod
             code =  m.get_code()
             if code == None:
                 continue
@@ -116,34 +115,41 @@ class CLASS:
                 bc = code.get_bc()
                 idx = 0
                 lineNum = 1
-                for i in bc.get():
+                for i in bc.get_instructions():
                     line = i.show_buff(idx)
-                    if line.find("invoke-") >= 0:
-                        index = line.index("[meth@")
-                        method = str(line[index:])
-                        method2 = method.split(" ")                        
+                    # print "=====instructions====="
+                    # print line
+                    # line format
+                    # v1, v2, v3, v4, v5, Landroid/support/v4/view/ViewCompatJellybeanMr1;->setPaddingRelative(Landroid/view/View; I I I I)V
+                    if line.find("->") >= 0:
+                        lineComponents = line.split(",")
 
-                        # set the class
-                        ClassStartIndex = index + len(method2[0]) + len(method2[1]) + 2
-                        className = line[ClassStartIndex : ClassStartIndex + len(method2[2])]
+                        # methodSignature format
+                        # Landroid/support/v4/view/ViewCompatJellybeanMr1;->setPaddingRelative(Landroid/view/View; I I I I)V
+                        methodSignature = lineComponents[-1]
+                        # methodComponents = methodSignature.split("->")
+
+                        # # set the class Landroid/support/v4/view/ViewCompatJellybeanMr1;
+                        # className = methodComponents[0]
+                        # # setPaddingRelative(Landroid/view/View; I I I I)V
+                        # method = methodComponents[1]
                         
-                        # set the return type
-                        ReturnStartIndex = index + method.rindex(")") + 2
-                        returnType = line[ReturnStartIndex : ReturnStartIndex+len(method2[-2])]
+                        # # set the return type 
+                        # returnType = method.split(")")[1]
+
+                        # # set the method name 
+                        # methodName = method.split("(")[0]
                         
-                        # set the method name 
-                        NameStartIndex = index + method.rindex(" ") + 1
-                        methodName = line[NameStartIndex : NameStartIndex + len(method2[-1]) - 1]
+                        # # set the parameter name
+                        # ParameterStartIndex = method.index("(")
+                        # ParameterEndIndex = method.rindex(")") + 1
+                        # parameterName = method[ParameterStartIndex : ParameterEndIndex]
                         
-                        # set the parameter name
-                        ParameterStartIndex = index + method.index("(")
-                        ParameterEndIndex = index + method.rindex(")") + 1
-                        parameterName = line[ParameterStartIndex : ParameterEndIndex]
+                        # # set the descriptor name
+                        # descriptorName = parameterName +returnType
                         
-                        # set the descriptor name
-                        descriptorName = parameterName +returnType
-                        
-                        invokedMethod = className + " " +descriptorName+ "," + methodName
+                        # invokedMethod = className + " " +descriptorName+ "," + methodName
+                        invokedMethod = methodSignature
                         methodInvokeList.append(invokingMethod +" ---> " + invokedMethod + "^Line:"+str(lineNum)+"  Offset:"+"0x%x" % idx)
                         
                     lineNum += 1
