@@ -4,6 +4,25 @@
 {% block head %}
 
 	{{ super() }}
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/demo.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/normalize.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabs.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabstyles.css') }}">
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/modernizr.custom.js') }}"></script>
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
+
 
 {% endblock %}
 <!-- End of Head Block-->
@@ -31,15 +50,51 @@
          <input type="submit" value="Upload">
     </form>
 </div>​
+
 {% if result %}
-<a href="/smali">smali</a>
-<a href="/java">java</a>
-<a href="/classes">classes</a>
+<div class="container">
+			
+			<section>
+				<div class="tabs tabs-style-linetriangle">
+					<nav>
+						<ul>
+							<li><a href="#section-linetriangle-1"><span>Smali</span></a></li>
+							<li><a href="#section-linetriangle-2"><span>Java</span></a></li>
+							<li><a href="#section-linetriangle-3"><span>Classes</span></a></li>
+							<li><a href="#section-linetriangle-4"><span>Strings</span></a></li>
+							<li><a href="#section-linetriangle-5"><span>Manifest</span></a></li>
+							<li><a href="#section-linetriangle-6"><span>Permissions</span></a></li>
+						</ul>
+					</nav>
+					<div class="content-wrap">
+						<section id="section-linetriangle-1"><p><pre><code> {{ smali_output }} </code></pre></p></section>
+						<section id="section-linetriangle-2"><p><pre><code> {{ java_output }} </code></pre></p></section>
+						<section id="section-linetriangle-3"><p>{% for class_output in classes_output %}
+	<pre>{{class_output}}</pre><br/>
+{% endfor %}</p></section>
+						<section id="section-linetriangle-4"><p>{% for string in strings_output %}
+	<pre>{{string}}</pre><br/>
+{% endfor %}</p></section>
+						<section id="section-linetriangle-5"><p>
+{% for line in manifestdata %}
+	<pre><code> {{ line }} </code></pre><br/>
+{% endfor %}</p></section>
+						<section id="section-linetriangle-6"><p>
+{% for permission in permissions %}
+	<pre>{{permission}}</pre><br/>
+{% endfor %}</p></section>
+					</div><!-- /content -->
+				</div><!-- /tabs -->
+			</section>
+		</div><!-- /container -->
 
-<a href="/strings">Strings</a>
-
-<a href="/manifest">androidmanifest</a>
-<a href="/permissions">permissions</a>
+	<script>
+		(function() {
+			[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+				new CBPFWTabs( el );
+			});
+		})();
+	</script>
 
 
 {% endif %}
