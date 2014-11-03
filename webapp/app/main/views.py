@@ -96,7 +96,15 @@ def index():
 		PackageClasses = []
 		for i in Classes:
 			if i[1:].startswith(pattern):
-				PackageClasses.append(i)
+				classObj = {}
+				methods = cl.get_methods_class(i)
+				methods_output = []
+				for m in methods:
+					methods_output.append(m.get_class_name() + "->" + m.get_name()+ m.get_descriptor())
+				classObj["classname"] = i
+				classObj["methods"] = methods_output
+				PackageClasses.append(classObj)
+		
 
 		inputpath = "temp/java/" + \
 		"edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
@@ -153,9 +161,9 @@ def smali():
 def java():
 	if apktool == None:
 		return redirect('/index')
-	classname = request.args["classname"]
-	inputpath = "temp/java/" + \
-		"edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
+	classname = request.args["classname"][1:-1] + ".java"
+	inputpath = "temp/java/" + classname
+		# "edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
 	try:
 		data = open(inputpath, "r").read()
 	except IOError, e:

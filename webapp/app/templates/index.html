@@ -16,12 +16,18 @@
 	<link rel="stylesheet"
 	type="text/css"
 	href="{{ url_for('static', filename = 'styles/tabstyles.css') }}">
+	<link rel="stylesheet" 
+	href="{{ url_for('static', filename = 'scripts/dist/themes/default/style.min.css') }}" />
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/jquery-2.1.1.min.js') }}"></script>
 	<script type="text/javascript"
 	language="javascript"
 	src="{{ url_for('static', filename = 'scripts/modernizr.custom.js') }}"></script>
 	<script type="text/javascript"
 	language="javascript"
 	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'scripts/dist/jstree.min.js') }}"></script>
 
 
 {% endblock %}
@@ -51,7 +57,25 @@
     </form>
 </div>​
 
+
+
 {% if result %}
+<div id="jstree_div">
+	<ul>
+		{% for class_obj in classes_output %}
+			<li class="cl" id="{{class_obj['classname']}}">{{class_obj["classname"]}}
+				<ul>
+					{% for m in class_obj["methods"] %}
+						<li class="method" id="{{m}}">{{ m }}</li>
+					{% endfor %}
+				</ul>
+			</li>
+		{% endfor %}
+	</ul>
+
+</div>
+
+
 <div class="container">
 			
 			<section>
@@ -69,8 +93,8 @@
 					<div class="content-wrap">
 						<section id="section-linetriangle-1"><p><pre><code> {{ smali_output }} </code></pre></p></section>
 						<section id="section-linetriangle-2"><p><pre><code> {{ java_output }} </code></pre></p></section>
-						<section id="section-linetriangle-3"><p>{% for class_output in classes_output %}
-	<pre>{{class_output}}</pre><br/>
+						<section id="section-linetriangle-3"><p>{% for class_obj in classes_output %}
+	<pre>{{class_obj["classname"]}}</pre><br/>
 {% endfor %}</p></section>
 						<section id="section-linetriangle-4"><p>{% for string in strings_output %}
 	<pre>{{string}}</pre><br/>
@@ -94,6 +118,19 @@
 				new CBPFWTabs( el );
 			});
 		})();
+	</script>
+
+	<script type="text/javascript">
+		$(function () { $('#jstree_div').jstree(); });
+		$('#jstree_div').on("changed.jstree", function (e, data) {
+	  		console.log(data.node.li_attr.class);
+	  		if (data.node.li_attr.class === "cl") {
+	  			window.open("java?classname=" + data.selected[0]);
+	  		} else {
+	  			window.open("callinout?methodname=" + data.selected[0]);
+	  		}
+	  		
+		});
 	</script>
 
 
