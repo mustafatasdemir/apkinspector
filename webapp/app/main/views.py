@@ -335,6 +335,43 @@ def callinout():
 def apk():
 	return render_template("deneme.html")
 
+def deneme_method():
+	return "Hade be"
+
+def smali_code(classname):
+	global apktool
+	smali_output = None
+	[flag, data] = apktool.getSmaliCode(classname)
+	if flag == 0:
+		smali_output = "Failed to show smali code!"
+	elif flag == 1:
+		smali_output = data
+	return smali_output;
+
+def java_code(classname):
+	java_output = None
+	cls_name = classname[1:-1] + ".java"
+	inputpath = "temp/java/" + cls_name
+	try:
+		data = open(inputpath, "r").read()
+	except IOError, e:
+		print str(e)
+		print "IOError"
+		data = None
+
+	if data == None:
+		java_output = "Failed to load java source code"
+	else:
+		java_output = data
+	return java_output;
+
+
+@main.context_processor
+def template_functions():
+	try:
+		return dict(get_java_output = java_code, get_smali_output = smali_code)
+	except:
+		abort(500)
 
 @main.route('/logout')
 def logout():

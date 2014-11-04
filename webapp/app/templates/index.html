@@ -29,6 +29,17 @@
 	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
 	<script src="{{ url_for('static', filename = 'scripts/dist/jstree.min.js') }}"></script>
 
+	<style type="text/css">
+		#jstree_div{
+		    width: 300px;
+		    height:auto;
+		    border: 1px solid #EEEEEE;
+		    overflow-x: scroll;
+		    overflow-y: hidden;
+		    white-space: nowrap;
+}
+	</style>
+
 
 {% endblock %}
 <!-- End of Head Block-->
@@ -50,6 +61,9 @@
 <!-- Body Block-->
 {% block body %}
 
+{% set counter = 1 %}
+
+
 <div class="container">
 	<form action="" method="post" enctype="multipart/form-data">
       <p><input type="file" name="file">
@@ -64,6 +78,11 @@
 	<ul>
 		{% for class_obj in classes_output %}
 			<li class="cl" id="{{class_obj['classname']}}">{{class_obj["classname"]}}
+				{% if counter == 10 %}
+					{% set java_code = get_java_output(class_obj["classname"]) %}
+					<h1>{{java_code}}</h1>
+					{% set counter = 2 %}
+				{% endif %}
 				<ul>
 					{% for m in class_obj["methods"] %}
 						<li class="method" id="{{m}}">{{ m }}</li>
@@ -91,7 +110,11 @@
 						</ul>
 					</nav>
 					<div class="content-wrap">
-						<section id="section-linetriangle-1"><p><pre><code> {{ smali_output }} </code></pre></p></section>
+						<section id="section-linetriangle-1"><p>
+
+						<div>
+							<pre><code> {{ smali_output }} </code></pre></p></section>
+						</div>
 						<section id="section-linetriangle-2"><p><pre><code> {{ java_output }} </code></pre></p></section>
 						<section id="section-linetriangle-3"><p>{% for class_obj in classes_output %}
 	<pre>{{class_obj["classname"]}}</pre><br/>
