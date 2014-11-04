@@ -31,13 +31,19 @@
 
 	<style type="text/css">
 		#jstree_div{
-		    width: 300px;
+		    width: 20%;
 		    height:auto;
 		    border: 1px solid #EEEEEE;
 		    overflow-x: scroll;
 		    overflow-y: hidden;
 		    white-space: nowrap;
-}
+		    float: left;
+		};
+
+		.tab_container {
+			width: 70%;
+			float: left;
+		}
 	</style>
 
 
@@ -90,41 +96,39 @@
 </div>
 
 
-<div class="container">
+<div class="tab_container" style="float: left; width: 75%;">
 			
 			<section>
 				<div class="tabs tabs-style-linetriangle">
 					<nav>
 						<ul>
-							<li><a href="#section-linetriangle-1"><span>Smali</span></a></li>
-							<li><a href="#section-linetriangle-2"><span>Java</span></a></li>
-							<li><a href="#section-linetriangle-3"><span>Classes</span></a></li>
-							<li><a href="#section-linetriangle-4"><span>Strings</span></a></li>
-							<li><a href="#section-linetriangle-5"><span>Manifest</span></a></li>
-							<li><a href="#section-linetriangle-6"><span>Permissions</span></a></li>
+							<li><a href="#section-linetriangle-1"><span>Strings</span></a></li>
+							<li><a href="#section-linetriangle-2"><span>Manifest</span></a></li>
+							<li><a href="#section-linetriangle-3"><span>Permissions</span></a></li>
 						</ul>
 					</nav>
 					<div class="content-wrap">
-						<section id="section-linetriangle-1"><p>
+						<section id="section-linetriangle-1">
+							<p>{% for string in strings_output %}
+								<pre>{{string}}</pre><br/>
+								{% endfor %}
+							</p>
+						</section>
 
-						<div>
-							<pre><code> {{ smali_output }} </code></pre></p></section>
-						</div>
-						<section id="section-linetriangle-2"><p><pre><code> {{ java_output }} </code></pre></p></section>
-						<section id="section-linetriangle-3"><p>{% for class_obj in classes_output %}
-	<pre>{{class_obj["classname"]}}</pre><br/>
-{% endfor %}</p></section>
-						<section id="section-linetriangle-4"><p>{% for string in strings_output %}
-	<pre>{{string}}</pre><br/>
-{% endfor %}</p></section>
-						<section id="section-linetriangle-5"><p>
-{% for line in manifestdata %}
-	<pre><code> {{ line }} </code></pre><br/>
-{% endfor %}</p></section>
-						<section id="section-linetriangle-6"><p>
-{% for permission in permissions %}
-	<pre>{{permission}}</pre><br/>
-{% endfor %}</p></section>
+						<section id="section-linetriangle-2">
+							<p>
+							{% for line in manifestdata %}
+								<pre><code> {{ line }} </code></pre><br/>
+							{% endfor %}
+							</p>
+						</section>
+						<section id="section-linetriangle-3">
+							<p>
+								{% for permission in permissions %}
+								<pre>{{permission}}</pre><br/>
+								{% endfor %}
+							</p>
+						</section>
 					</div><!-- /content -->
 				</div><!-- /tabs -->
 			</section>
