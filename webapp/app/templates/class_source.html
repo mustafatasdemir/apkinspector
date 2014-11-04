@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+<!-- Head Block-->
+{% block head %}
+
+	{{ super() }}
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/demo.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/normalize.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabs.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabstyles.css') }}">
+	<link rel="stylesheet" 
+	href="{{ url_for('static', filename = 'scripts/dist/themes/default/style.min.css') }}" />
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/jquery-2.1.1.min.js') }}"></script>
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/modernizr.custom.js') }}"></script>
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
+
+
+{% endblock %}
+<!-- End of Head Block-->
+
+{% block title %}
+
+	{{ super() }}
+
+{% endblock %}
+
+<!-- Scripts Block-->
+{% block scripts %}
+
+	{{ super() }}
+
+{% endblock %}
+<!-- End of Scripts Block-->
+
+<!-- Body Block-->
+{% block body %}
+
+
+<div class="container">
+			
+			<section>
+				<div class="tabs tabs-style-linetriangle">
+					<nav>
+						<ul>
+							<li><a href="#section-linetriangle-1"><span>Smali</span></a></li>
+							<li><a href="#section-linetriangle-2"><span>Java</span></a></li>
+						</ul>
+					</nav>
+					<div class="content-wrap">
+						<section id="section-linetriangle-1"><p>
+
+						<div>
+							<pre><code> {{ smali_output }} </code></pre></p></section>
+						</div>
+						<section id="section-linetriangle-2"><p><pre><code> {{ java_output }} </code></pre></p></section>
+						
+					</div><!-- /content -->
+				</div><!-- /tabs -->
+			</section>
+		</div><!-- /container -->
+
+	<script>
+		(function() {
+			[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+				new CBPFWTabs( el );
+			});
+		})();
+	</script>
+
+
+{% endblock %}
+<!-- End of Body Block-->

@@ -78,11 +78,6 @@
 	<ul>
 		{% for class_obj in classes_output %}
 			<li class="cl" id="{{class_obj['classname']}}">{{class_obj["classname"]}}
-				{% if counter == 10 %}
-					{% set java_code = get_java_output(class_obj["classname"]) %}
-					<h1>{{java_code}}</h1>
-					{% set counter = 2 %}
-				{% endif %}
 				<ul>
 					{% for m in class_obj["methods"] %}
 						<li class="method" id="{{m}}">{{ m }}</li>
@@ -148,7 +143,7 @@
 		$('#jstree_div').on("changed.jstree", function (e, data) {
 	  		console.log(data.node.li_attr.class);
 	  		if (data.node.li_attr.class === "cl") {
-	  			window.open("java?classname=" + data.selected[0]);
+	  			window.open("class_source?classname=" + data.selected[0]);
 	  		} else {
 	  			window.open("callinout?methodname=" + data.selected[0]);
 	  		}

@@ -261,6 +261,34 @@ def classes():
 	# print PackageClasses
 	return render_template("classes.html", classes_output=PackageClasses)
 
+@main.route('/class_source', methods=['GET'])
+def class_source():
+	global apktool
+	if apktool == None:
+		return redirect('/index')
+	classname = request.args["classname"][1:-1]
+	inputpath = "temp/java/" + classname + ".java"
+		# "edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
+	try:
+		data = open(inputpath, "r").read()
+	except IOError, e:
+		print str(e)
+		print "IOError"
+		data = None
+
+	if data == None:
+		java_output = "Failed to load java source code"
+	else:
+		java_output = data
+
+	inputpath2 = "/" + classname + "/"
+	[flag, smali_data] = apktool.getSmaliCode(inputpath2)
+	if flag == 0:
+		smali_output = "Failed to show smali code"
+	elif flag == 1:
+		smali_output = smali_data
+	return render_template("class_source.html", java_output=java_output, smali_output = smali_output)
+
 @main.route('/methods', methods=['GET'])
 def methods():
 	global cl
