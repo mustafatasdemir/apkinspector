@@ -20,44 +20,28 @@ from flask import Flask, render_template, session, redirect, url_for, \
 	current_app, request, abort
 from . import main
 from .. import db
-from ..helpers.decompile import Decompile
-from ..helpers.APKtool import APKtool
-
-from ..helpers.APKInfo import *
-from ..helpers.GetMethods import *
-from ..helpers.CallInOut import *
-from ..helpers import Global
-
-apktool = None
-apk = None
-vm = None
-vmx = None
-cl = None
-path2method = {}
+from ..helpers.Static import *
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "."
 app.config['SECRET_KEY'] = 'F34TF$($e34D'
 
+analyze_objs = {}
 
-def session_exists():
-	if "username" in session:
-		return True
-
+def get_session_data():
+	if 'filename' in session:
+		if session['filename'] in analyze_objs:
+			return analyze_objs[session['filename']]
+	return None
 
 @main.route('/', methods=['GET', 'POST'])
 @main.route('/index', methods=['GET', 'POST'])
 def index():
-	global apktool
-
 	result = False
-	smali_output = None
 	manifestdata = None
 	permissions = None
-	permission_count = None
 	Strings = None
 	PackageClasses = None
-	java_output = None
 
 	if request.method == 'POST':
 		file = request.files['file']
@@ -65,341 +49,50 @@ def index():
 		filetype = file.filename.split('.', 1)[1]
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 		# "SuperAwesomeContacts.apk"
-		initialize(filename)
-		session['filename'] = str(filename)
+		static_analysis = StaticAnalysis(filename)
+		session['filename'] = filename
+		analyze_objs[filename] = static_analysis
 		result = True
-
-		if apktool == None:
-			return redirect('/index')
-
-		classname = "/edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity/"
-		[flag, data] = apktool.getSmaliCode(classname)
-		if flag == 0:
-			smali_output = "Failed to show smali code"
-		elif flag == 1:
-			smali_output = data
-
-		manifestdata = apktool.getManifest()
-
-		apk = APK(session['filename'])
-		(permissions, permission_count) = apk.getPermissions()
-		permissions = permissions.split('\n')
-
-		methodget = GetDVM(session['filename'])
-		Strings = methodget.get_DALVIK_VM().get_strings()
-
-		package = apk.getPackage()
-		countSlash = package.count('.', 0, len(package))
-		pattern = package.replace('.', '/', countSlash)
-		methodget = GetDVM(session['filename'])
-		Classes = methodget.get_DALVIK_VM().get_classes_names()
-		PackageClasses = []
-		for i in Classes:
-			if i[1:].startswith(pattern):
-				classObj = {}
-				methods = cl.get_methods_class(i)
-				methods_output = []
-				for m in methods:
-					methods_output.append(m.get_class_name() + "->" + m.get_name()+ m.get_descriptor())
-				classObj["classname"] = i
-				classObj["methods"] = methods_output
-				PackageClasses.append(classObj)
-		
-
-		inputpath = "temp/java/" + \
-		"edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
-		try:
-			data = open(inputpath, "r").read()
-		except IOError, e:
-			print str(e)
-			print "IOError"
-			data = None
-
-		if data == None:
-			java_output = "Failed to load java source code"
-		else:
-			java_output = data
+		manifestdata = static_analysis.get_manifest()
+		permissions = static_analysis.get_permissions()
+		Strings = static_analysis.get_strings()
+		PackageClasses = static_analysis.get_class_method_list()
 
 	return render_template("index.html", result=result,
-		smali_output = smali_output,
 		manifestdata = manifestdata,
 		permissions = permissions,
 		strings_output = Strings,
-		classes_output = PackageClasses,
-		java_output = java_output)
+		classes_output = PackageClasses)
 
-
-def initialize(filename):
-	global apktool
-	global cl
-	decomp_thread = Decompile(filename)
-	decomp_thread.start()
-	decomp_thread.join()
-
-	apktool = APKtool()
-	cl = CLASS(Global.APK, Global.VM, Global.VMX)
-	print "apktool : "
-	print apktool
-
-
-@main.route('/smali', methods=['GET'])
-def smali():
-	global apktool
-	if apktool == None:
-		return redirect('/index')
-
-	classname = "/edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity/"
-	[flag, data] = apktool.getSmaliCode(classname)
-	if flag == 0:
-		smali_output = "Failed to show smali code"
-	elif flag == 1:
-		smali_output = data
-	return render_template("smali.html", smali_output=smali_output)
-
-
-@main.route('/java', methods=['GET'])
-def java():
-	if apktool == None:
-		return redirect('/index')
-	classname = request.args["classname"][1:-1] + ".java"
-	inputpath = "temp/java/" + classname
-		# "edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
-	try:
-		data = open(inputpath, "r").read()
-	except IOError, e:
-		print str(e)
-		print "IOError"
-		data = None
-
-	if data == None:
-		java_output = "Failed to load java source code"
-	else:
-		java_output = data
-
-	return render_template("java.html", java_output=java_output)
-
-
-@main.route('/manifest', methods=['GET'])
-def androidmanifest():
-	global apktool
-	if apktool == None:
-		return redirect('/index')
-	manifestdata = apktool.getManifest()
-	return render_template("manifest.html", manifestdata=manifestdata)
-
-
-@main.route('/permissions', methods=['GET'])
-def permissions():
-	apk = APK(session['filename'])
-	permissions = None
-	permission_count = None
-	(permissions, permission_count) = apk.getPermissions()
-	permissions = permissions.split('\n')
-	return render_template("permissions.html", permissions=permissions)
-
-
-@main.route('/trial')
-def trial():
-	permissions = None
-	permission_count = None
-	is_valid = None
-	file_name = None
-	services = None
-	receivers = None
-	version_code = None
-	version_name = None
-	package = None
-	if apk.isVaildAPK():
-		(permissions, permission_count) = apk.getPermissions()
-		permissions = permissions.split("\n")
-		is_valid = apk.isVaildAPK()
-		file_name = apk.getFilename()
-		(services, services_count) = apk.getServices()
-		services = services.split("\n")
-		(receivers, receivers_count) = apk.getReceivers()
-		receivers = receivers.split("\n")
-		version_code = apk.getVersionCode()
-		version_name = apk.getVersionName()
-		package = apk.getPackage()
-		return render_template("apk.html", permissions=permissions,
-							   is_valid=is_valid,
-							   file_name=file_name,
-							   services=services,
-							   receivers=receivers,
-							   version_code=version_code,
-							   version_name=version_name,
-							   package=package)
-	else:
-		abort(500)
-
-
-@main.route('/classes', methods=['GET', 'POST'])
-def classes():
-	global apktool
-	if apktool == None:
-		return redirect('/index')
-	if request.method == 'POST':
-		studio = (request.form["class"])
-		session['Class'] = studio[1:]
-		print 'Chosen Class'
-		print studio[1:]
-		result = True
-		return render_template("index.html", result=result)
-	Classes = None
-	# get the package name and filter classes only with that package name
-	apk = APK(session['filename'])
-	package = apk.getPackage()
-	countSlash = package.count('.', 0, len(package))
-	pattern = package.replace('.', '/', countSlash)
-	methodget = GetDVM(session['filename'])
-	Classes = methodget.get_DALVIK_VM().get_classes_names()
-	PackageClasses = []
-	for i in Classes:
-		if i[1:].startswith(pattern):
-			PackageClasses.append(i)
-
-	# print PackageClasses
-	return render_template("classes.html", classes_output=PackageClasses)
 
 @main.route('/class_source', methods=['GET'])
 def class_source():
-	global apktool
-	if apktool == None:
+	session_data = get_session_data()
+	if (session_data == None):
 		return redirect('/index')
-	classname = request.args["classname"][1:-1]
-	inputpath = "temp/java/" + classname + ".java"
-		# "edu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity.java"
-	try:
-		data = open(inputpath, "r").read()
-	except IOError, e:
-		print str(e)
-		print "IOError"
-		data = None
-
+	data = session_data.get_java_code(request.args["classname"])
 	if data == None:
 		java_output = "Failed to load java source code"
 	else:
 		java_output = data
 
-	inputpath2 = "/" + classname + "/"
-	[flag, smali_data] = apktool.getSmaliCode(inputpath2)
-	if flag == 0:
+	smali_data = session_data.get_smali_code(request.args["classname"])
+	if smali_data == None:
 		smali_output = "Failed to show smali code"
-	elif flag == 1:
+	else:
 		smali_output = smali_data
 	return render_template("class_source.html", java_output=java_output, smali_output = smali_output)
-
-@main.route('/methods', methods=['GET'])
-def methods():
-	global cl
-	if cl == None:
-		return redirect('/index')
-	classname = request.args["classname"]
-	methods = cl.get_methods_class(classname)
-	methods_output = []
-	for m in methods:
-		methods_output.append(m.get_class_name() + "->" + m.get_name()+ m.get_descriptor())
-	return render_template("methods.html", methods_output = methods_output)
-
-
-
-@main.route('/strings', methods=['GET'])
-def strings():
-	global apktool
-	if apktool == None:
-		return redirect('/index')
-	Strings = None
-	methodget = GetDVM(session['filename'])
-	Strings = methodget.get_DALVIK_VM().get_strings()
-	return render_template("strings.html", strings_output=Strings)
 
 
 @main.route('/callinout', methods=['GET'])
 def callinout():
-	global cl
-	methodInvokeList = cl.get_methodInvoke()
-	callInOut = CallInOut(methodInvokeList)
-
-	# if method.get_code() == None:
-	#     self.Graph_call.scene.clear()
-	#     return
-	# allmethod = self.CL.vm.get_methods()
-	# xdotc = XDot(method, Global.VM, Global.VMX)
-
-	# xdotc.call2xdot(methodInvokeList, allmethod)
-	# [pagesize, nodeList, linkList] = xdotc.parsecall()
-
-
-	# print nodeList
-	# print linkList
-
-	# self.Graph_call.setPageSize(pagesize)
-	# self.Graph_call.showcall(nodeList, linkList)
-
-	callInContent = "************************Call In*************************\n"
-	callOutContent = "***********************Call Out************************\n"
-	# className = method.get_class_name()
-	# methodName = method.get_name()
-	# descriptor = method.get_descriptor()
-	# callMethod = className + " " + descriptor + "," + methodName
+	data = get_session_data()
+	if (data == None):
+		return redirect('/index')
 	callMethod = request.args["methodname"]
-	# callMethod = "Ledu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity;->onCreate(Landroid/os/Bundle;)V"
-	callInList = callInOut.searchCallIn(callMethod)
-	callOutList = callInOut.searchCallOut(callMethod)
-
-	for i in callInList:
-		temp = i.split("^")
-		callInContent += temp[0] + "  (" + temp[1] + ")" + "\n"
-
-	for i in callOutList:
-		temp = i.split("^")
-		callOutContent += temp[0] + "  (" + temp[1] + ")" + "\n"
-
-	calltxt = callInContent + "\n\n\n" + callOutContent
+	calltxt = data.get_call_in_out(callMethod)
 	return render_template("callinout.html", calltxt = calltxt)
 
-
-@main.route('/apk')
-def apk():
-	return render_template("deneme.html")
-
-def deneme_method():
-	return "Hade be"
-
-def smali_code(classname):
-	global apktool
-	smali_output = None
-	[flag, data] = apktool.getSmaliCode(classname)
-	if flag == 0:
-		smali_output = "Failed to show smali code!"
-	elif flag == 1:
-		smali_output = data
-	return smali_output;
-
-def java_code(classname):
-	java_output = None
-	cls_name = classname[1:-1] + ".java"
-	inputpath = "temp/java/" + cls_name
-	try:
-		data = open(inputpath, "r").read()
-	except IOError, e:
-		print str(e)
-		print "IOError"
-		data = None
-
-	if data == None:
-		java_output = "Failed to load java source code"
-	else:
-		java_output = data
-	return java_output;
-
-
-@main.context_processor
-def template_functions():
-	try:
-		return dict(get_java_output = java_code, get_smali_output = smali_code)
-	except:
-		abort(500)
 
 @main.route('/logout')
 def logout():

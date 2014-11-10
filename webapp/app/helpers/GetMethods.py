@@ -101,13 +101,7 @@ class CLASS:
         allMethods = self.vm.get_methods()
         import Global
         for m in allMethods:
-#Yuan :build callinout tree
-           
-            # invokingMethod = m.get_class_name() + " " + m.get_descriptor() +"," + m.get_name()
             invokingMethod = m.get_class_name() + "->" + m.get_name()+ m.get_descriptor()
-            # print "++++++ invokingMethod ++++++"
-            # print invokingMethod
-            Global.FM = invokingMethod
             code =  m.get_code()
             if code == None:
                 continue
@@ -127,52 +121,14 @@ class CLASS:
                         # methodSignature format
                         # Landroid/support/v4/view/ViewCompatJellybeanMr1;->setPaddingRelative(Landroid/view/View; I I I I)V
                         methodSignature = lineComponents[-1]
-                        # methodComponents = methodSignature.split("->")
-
-                        # # set the class Landroid/support/v4/view/ViewCompatJellybeanMr1;
-                        # className = methodComponents[0]
-                        # # setPaddingRelative(Landroid/view/View; I I I I)V
-                        # method = methodComponents[1]
-                        
-                        # # set the return type 
-                        # returnType = method.split(")")[1]
-
-                        # # set the method name 
-                        # methodName = method.split("(")[0]
-                        
-                        # # set the parameter name
-                        # ParameterStartIndex = method.index("(")
-                        # ParameterEndIndex = method.rindex(")") + 1
-                        # parameterName = method[ParameterStartIndex : ParameterEndIndex]
-                        
-                        # # set the descriptor name
-                        # descriptorName = parameterName +returnType
-                        
-                        # invokedMethod = className + " " +descriptorName+ "," + methodName
                         invokedMethod = methodSignature
                         methodInvokeList.append(invokingMethod +" ---> " + invokedMethod + "^Line:"+str(lineNum)+"  Offset:"+"0x%x" % idx)
                         
                     lineNum += 1
                     idx += i.get_length() 
-#        print "methodinvoke list\n" 
-#        print  methodInvokeList
+
         file = open('method.txt','a')
-#             file.write("%s\n" % method)
         file.write("%s\n" % methodInvokeList )
         file.close
         Global.endmethod = invokedMethod
         return methodInvokeList
-
-class GetDVM:
-    filename=None
-
-
-    def __init__(self, filename):
-        self.filename = filename
-        
-    
-    def get_DALVIK_VM(self):
-        print 'DALVIK'
-        apkinfo = APK(self.filename)
-
-        return DalvikVMFormat(apkinfo.getDex())

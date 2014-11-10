@@ -2,28 +2,21 @@ import os
 import sys
 import Global
 
-# use the apktool to get the smali codes and AndroidManifest.xml
-# return 1: success ; return 0: fail
-def callAPKtool(filename):
-    outputPath = sys.path[0] + "/temp/ApktoolOutput"
-    print "call apktool " + filename
-    cmd = "apktool d -d -f " + filename + " -o " + outputPath
-    print "finish calling apktool " + filename
-    if os.system(cmd) !=0:
-        return  0
-    else:
-        print "SUCCESS finish calling apktool " + filename
-        return  1
-
-
 class APKtool:    
     firstFlag = None
     lastClassName = None
+    output_path = None
     
-    def __init__(self):
-        print "apktool 2"
-#       self.successFlag = Global.FLAG_APKTOOL
-        self.successFlag = 1
+    def __init__(self, filename):
+        self.output_path = sys.path[0] + "/temp/" + filename + "/ApktoolOutput/"
+        cmd = "apktool d -d -f " + filename + " -o " + self.output_path
+        print "finish calling apktool " + filename
+        if os.system(cmd) !=0:
+            self.successFlag = 0
+        else:
+            print "SUCCESS finish calling apktool " + filename
+            self.successFlag = 1
+       
         self.firstFlag = 0
         self.lastClassName = ""
 
@@ -32,7 +25,7 @@ class APKtool:
             print "apktool fail3"
             return [0, ""]
         print "apktool success 4"
-        path = sys.path[0] + "/temp/ApktoolOutput/AndroidManifest.xml"
+        path = self.output_path + "AndroidManifest.xml"
         try:
             data = open(path, "r").read()
         except IOError:
@@ -52,7 +45,7 @@ class APKtool:
         if self.firstFlag == 0:
             self.firstFlag ==1
             self.lastClassName = className
-            classPath = sys.path[0] + "/temp/ApktoolOutput/smali/" + className
+            classPath = self.output_path + "smali/" + className
             print "class path: " + classPath
             try:
                 data = open(classPath, "r").read()
@@ -67,6 +60,6 @@ class APKtool:
                 return [0, ""] 
             else:
                 self.lastClassName = className
-                classPath = sys.path[0] + "/temp/ApktoolOutput/" + className
+                classPath = self.output_path + className
                 data = open(classPath, "r").read()
                 return [1, data]
