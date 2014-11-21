@@ -22,7 +22,7 @@ from . import main
 from .. import db
 from ..helpers.Static import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.config['UPLOAD_FOLDER'] = "."
 app.config['SECRET_KEY'] = 'F34TF$($e34D'
 
@@ -92,6 +92,27 @@ def callinout():
 	callMethod = request.args["methodname"]
 	calltxt = data.get_call_in_out(callMethod)
 	return render_template("callinout.html", calltxt = calltxt)
+
+@main.route('/cfg', methods=['GET'])
+def cfg():
+	data = get_session_data()
+	if (data == None):
+		return redirect('/index')
+	methodname = request.args["methodname"]
+	data.generate_cfg_xdot(methodname)
+	return render_template("cfg.html", methodname = methodname)
+
+@main.route('/method2dot.txt', methods=['GET'])
+def method2dot():
+	print "method2dot +++"
+	# return app.send_static_file('method2dot.txt')
+	try:
+		data = open('method2dot.txt', "r").read()
+	except IOError, e:
+		print str(e)
+		print "IOError"
+		data = None
+	return data
 
 
 @main.route('/logout')

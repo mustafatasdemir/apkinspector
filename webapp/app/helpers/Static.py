@@ -3,6 +3,7 @@ from APKInfo import *
 from GetMethods import *
 from CallInOut import *
 from JAD import *
+from xdotParser import *
 
 class StaticAnalysis:
 
@@ -13,6 +14,7 @@ class StaticAnalysis:
 	vmx = None
 	callInOut = None
 	filename = None
+	methodMapping = {}
 
 	def __init__(self, filename):
 		self.filename = filename
@@ -54,7 +56,9 @@ class StaticAnalysis:
 				methods = self.cl.get_methods_class(i)
 				methods_output = []
 				for m in methods:
-					methods_output.append(m.get_class_name() + "->" + m.get_name()+ m.get_descriptor())
+					mname = m.get_class_name() + "->" + m.get_name()+ m.get_descriptor()
+					methods_output.append(mname)
+					self.methodMapping[mname] = m
 				classObj["classname"] = i
 				classObj["methods"] = methods_output
 				PackageClasses.append(classObj)
@@ -98,3 +102,8 @@ class StaticAnalysis:
 
 		calltxt = callInContent + "\n\n\n" + callOutContent
 		return calltxt
+
+	def generate_cfg_xdot(self, methodname):
+		m = self.methodMapping[methodname]
+		xdot = XDot(m, self.vm, self.vmx)
+		xdot.method2xdot()
