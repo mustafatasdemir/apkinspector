@@ -16,18 +16,46 @@
 	<link rel="stylesheet"
 	type="text/css"
 	href="{{ url_for('static', filename = 'styles/tabstyles.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/searchbar.css') }}">
 	<link rel="stylesheet" 
 	href="{{ url_for('static', filename = 'scripts/dist/themes/default/style.min.css') }}" />
 	<script type="text/javascript"
 	language="javascript"
 	src="{{ url_for('static', filename = 'scripts/jquery-2.1.1.min.js') }}"></script>
-	<script type="text/javascript"
+	<scriptsipt type="text/javascript"
 	language="javascript"
 	src="{{ url_for('static', filename = 'scripts/modernizr.custom.js') }}"></script>
 	<script type="text/javascript"
 	language="javascript"
 	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
 	<script src="{{ url_for('static', filename = 'scripts/dist/jstree.min.js') }}"></script>
+
+	<script type="text/javascript">
+	function somefunction() {
+
+		var value = document.getElementById("tfq").value;
+		$('#jstree_div').jstree('open_all');
+		
+
+		$(".cl").each( function (index) {
+			var flag = false;
+			var tem = $(this).text();
+			var tid = $(this);
+			if (tem.indexOf(value) != -1) {
+				flag = true;
+				this.style.color="blue";
+				//alert("Found match in class!"+tem);
+			}
+			if (flag == false) {
+				$('#jstree_div').jstree('close_node', tid);
+			}
+		});
+	} 
+	
+</script>
+
 
 	<style type="text/css">
 		#jstree_div{
@@ -38,13 +66,27 @@
 		    overflow-y: hidden;
 		    white-space: nowrap;
 		    float: left;
+		    font-size: 60%;
 		};
 
 		.tab_container {
 			width: 70%;
 			float: left;
 		}
+
+		.highlight {
+    		background-color: #fff34d;
+    		-moz-border-radius: 5px; /* FF1+ */
+  			-webkit-border-radius: 5px; /* Saf3-4 */
+   			border-radius: 5px; /* Opera 10.5, IE 9, Saf5, Chrome */
+    		-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* FF3.5+ */
+    		-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Saf3.0+, Chrome */
+    		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Opera 10.5+, IE 9.0 */
+		}
+
+		
 	</style>
+
 
 
 {% endblock %}
@@ -69,26 +111,18 @@
 
 {% set counter = 1 %}
 
+<div id="tfheader">
+		<form id="tfnewsearch" method="get" action="">
+		        <input type="text" id="tfq" class="tftextinput2" name="q" size="21" maxlength="120" value="Search our website"><input type="button" id="tfbtn" value=">" onclick="somefunction();" class="tfbutton2">
+		</form>
+		
+		<div class="tfclear"></div>
+</div>
 
 
-{% if not result %}
-	<div style="text-align: center;">
-		<h1> APK Inspector </h1>
-		<img src="{{ url_for('static', filename = 'images/logo.png') }}"></img>
-	</div>
-{% endif %}
 
-
-<div class="container">
-	<form action="" method="post" enctype="multipart/form-data">
-      <p><input type="file" name="file">
-         <input type="submit" value="Upload">
-    </form>
-</div>​
-
-{% if result %}
 <div id="jstree_div">
-	<ul>
+	<ul class="classobj">
 		{% for class_obj in classes_output %}
 			<li class="cl" id="{{class_obj['classname']}}">{{class_obj["classname"]}}
 				<ul>
@@ -99,8 +133,8 @@
 			</li>
 		{% endfor %}
 	</ul>
-
 </div>
+
 
 
 <div class="tab_container" style="float: left; width: 75%;">
@@ -163,7 +197,6 @@
 	</script>
 
 
-{% endif %}
 
 
 {% endblock %}
