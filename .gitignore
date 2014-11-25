@@ -3,7 +3,6 @@
 *.log
 *.project
 *.txt
-webapp/venv/*
 out/*
 temp/*
 webapp/temp/*
