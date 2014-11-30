@@ -4,6 +4,7 @@ from GetMethods import *
 from CallInOut import *
 from JAD import *
 from xdotParser import *
+import os, fnmatch
 
 class StaticAnalysis:
 
@@ -107,3 +108,26 @@ class StaticAnalysis:
 		m = self.methodMapping[methodname]
 		xdot = XDot(m, self.vm, self.vmx)
 		xdot.method2xdot()
+
+	def grep(self, keyword):
+		result = []
+		classname = ""
+		pathname = './temp/' + self.filename + '/java'
+		for fileName in self.find_files(pathname, '*.java'):
+			with open(fileName) as f:
+				contents = f.read()
+			if keyword in contents:
+		    	# sample classname: Ledu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity;
+				classname = "L" + fileName[(7 + len(self.filename) + 6):-5] + ";"
+				print "Classname: " + classname
+				result.append(classname)
+		return result
+
+	def find_files(self, directory, pattern):
+	    for root, dirs, files in os.walk(directory):
+	        for basename in files:
+	            if fnmatch.fnmatch(basename, pattern):
+	                fileName = os.path.join(root, basename)
+	                yield fileName
+
+

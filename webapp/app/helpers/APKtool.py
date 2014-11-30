@@ -1,6 +1,5 @@
 import os
 import sys
-import Global
 
 class APKtool:    
     firstFlag = None
@@ -15,8 +14,7 @@ class APKtool:
             self.successFlag = 0
         else:
             print "SUCCESS finish calling apktool " + filename
-            self.successFlag = 1
-       
+            self.successFlag = 1   
         self.firstFlag = 0
         self.lastClassName = ""
 

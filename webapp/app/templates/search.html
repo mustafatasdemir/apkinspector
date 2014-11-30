@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+<!-- Head Block-->
+{% block head %}
+
+	{{ super() }}
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/demo.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/normalize.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabs.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabstyles.css') }}">
+	<link rel="stylesheet" 
+	href="{{ url_for('static', filename = 'scripts/dist/themes/default/style.min.css') }}" />
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/jquery-2.1.1.min.js') }}"></script>
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/modernizr.custom.js') }}"></script>
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'scripts/dist/jstree.min.js') }}"></script>
+
+	<style type="text/css">
+		#jstree_div{
+		    width: 20%;
+		    height:auto;
+		    border: 1px solid #EEEEEE;
+		    overflow-x: scroll;
+		    overflow-y: hidden;
+		    white-space: nowrap;
+		    float: left;
+		};
+
+		.tab_container {
+			width: 70%;
+			float: left;
+		}
+	</style>
+
+
+{% endblock %}
+<!-- End of Head Block-->
+
+{% block title %}
+
+	{{ super() }}
+
+{% endblock %}
+
+<!-- Scripts Block-->
+{% block scripts %}
+
+	{{ super() }}
+
+{% endblock %}
+<!-- End of Scripts Block-->
+
+<!-- Body Block-->
+{% block body %}
+
+<div id="jstree_div">
+	<ul>
+		{% for classname in searchResult %}
+			<li class="cl" id="{{ classname }}">{{ classname }}</li>
+		{% endfor %}
+	</ul>
+
+</div>
+
+
+<div class="tab_container" style="float: left; width: 75%;">
+			
+			
+</div><!-- /container -->
+
+	<script>
+		(function() {
+			[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+				new CBPFWTabs( el );
+			});
+		})();
+	</script>
+
+	<script type="text/javascript">
+		$(function () { $('#jstree_div').jstree(); });
+		$('#jstree_div').on("changed.jstree", function (e, data) {
+	  		console.log(data.node.li_attr.class);
+	  		if (data.node.li_attr.class === "cl") {
+	  			window.open("class_source?classname=" + data.selected[0]);
+	  		}
+	  		
+		});
+	</script>
+
+{% endblock %}
+<!-- End of Body Block-->

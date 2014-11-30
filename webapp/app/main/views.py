@@ -15,6 +15,7 @@
 import os
 import sys
 import pickle
+import glob
 from datetime import datetime
 from flask import Flask, render_template, session, redirect, url_for, \
 	current_app, request, abort
@@ -113,6 +114,15 @@ def method2dot():
 		print "IOError"
 		data = None
 	return data
+
+@main.route('/search', methods=['GET'])
+def search():
+	data = get_session_data()
+	if (data == None):
+		return redirect('/index')
+	searchStr = request.args['keyword']
+	searchResult = data.grep(searchStr)
+	return render_template('search.html', searchResult = searchResult)
 
 
 @main.route('/logout')
