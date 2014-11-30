@@ -131,6 +131,17 @@ def logout():
 	return redirect(url_for('main.index'))
 
 
+
+@main.route('/about')
+def about():
+	return render_template("about.html")
+
+
+@main.route('/contact')
+def contact():
+	return render_template("contact.html")
+
+
 def login_user(username, password):
 
 	try:
