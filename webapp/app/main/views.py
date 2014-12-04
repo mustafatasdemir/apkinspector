@@ -122,7 +122,7 @@ def search():
 		return redirect('/index')
 	searchStr = request.args['keyword']
 	searchResult = data.grep(searchStr)
-	return render_template('search.html', searchResult = searchResult)
+	return render_template('search.html', searchResult = searchResult, keyword = searchStr)
 
 
 @main.route('/logout')

@@ -28,6 +28,13 @@
 	language="javascript"
 	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
 
+	<style>
+	.highlight
+	{
+	background-color:yellow;
+	}
+	</style>
+
 
 {% endblock %}
 <!-- End of Head Block-->
@@ -56,25 +63,68 @@
 				<div class="tabs tabs-style-linetriangle">
 					<nav>
 						<ul>
-							<li><a href="#section-linetriangle-1"><span>Smali</span></a></li>
-							<li><a href="#section-linetriangle-2"><span>Java</span></a></li>
+							<li><a href="#section-linetriangle-1"><span>Java</span></a></li>
+							<li><a href="#section-linetriangle-2"><span>Smali</span></a></li>
+							
 						</ul>
 					</nav>
 					<div class="content-wrap">
-						<section id="section-linetriangle-1"><p><pre><code> {{ smali_output }} </code></pre></p></section>
-						<section id="section-linetriangle-2"><p><pre><code> {{ java_output }} </code></pre></p></section>
-						
+						<section id="section-linetriangle-1"><p><pre><code> {{ java_output }} </code></pre></p></section>
+						<section id="section-linetriangle-2"><p><pre><code> {{ smali_output }} </code></pre></p></section>
 					</div><!-- /content -->
 				</div><!-- /tabs -->
 			</section>
 		</div><!-- /container -->
 
 	<script>
+		var QueryString = function () {
+		  // This function is anonymous, is executed immediately and 
+		  // the return value is assigned to QueryString!
+		  var query_string = {};
+		  var query = window.location.search.substring(1);
+		  var vars = query.split("&");
+		  for (var i=0;i<vars.length;i++) {
+		    var pair = vars[i].split("=");
+		    	// If first entry with this name
+		    if (typeof query_string[pair[0]] === "undefined") {
+		      query_string[pair[0]] = pair[1];
+		    	// If second entry with this name
+		    } else if (typeof query_string[pair[0]] === "string") {
+		      var arr = [ query_string[pair[0]], pair[1] ];
+		      query_string[pair[0]] = arr;
+		    	// If third or later entry with this name
+		    } else {
+		      query_string[pair[0]].push(pair[1]);
+		    }
+		  } 
+		    return query_string;
+		} ();
+
+		function highlight(text)
+		{
+		    inputText = document.getElementById("section-linetriangle-1")
+		    var innerHTML = inputText.innerHTML
+		    var index = innerHTML.indexOf(text);
+		    if ( index >= 0 )
+		    { 
+		        innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+		        inputText.innerHTML = innerHTML 
+		    }
+
+		}
+
 		(function() {
 			[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+
 				new CBPFWTabs( el );
 			});
+
+			highlight(QueryString.keyword);
 		})();
+
+		
+
+		
 	</script>
 
 

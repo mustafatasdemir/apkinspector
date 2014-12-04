@@ -30,8 +30,8 @@
 	<script src="{{ url_for('static', filename = 'scripts/dist/jstree.min.js') }}"></script>
 
 	<style type="text/css">
-		#jstree_div{
-		    width: 20%;
+		#search_result{
+		    width: 100%;
 		    height:auto;
 		    border: 1px solid #EEEEEE;
 		    overflow-x: scroll;
@@ -40,10 +40,6 @@
 		    float: left;
 		};
 
-		.tab_container {
-			width: 70%;
-			float: left;
-		}
 	</style>
 
 
@@ -67,7 +63,10 @@
 <!-- Body Block-->
 {% block body %}
 
-<div id="jstree_div">
+<div>
+	<h1>Search Result for Keyword: {{ keyword}} </h1>
+</div>
+<div id="search_result">
 	<ul>
 		{% for classname in searchResult %}
 			<li class="cl" id="{{ classname }}">{{ classname }}</li>
@@ -75,27 +74,16 @@
 	</ul>
 
 </div>
-
-
-<div class="tab_container" style="float: left; width: 75%;">
 			
 			
 </div><!-- /container -->
 
-	<script>
-		(function() {
-			[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
-				new CBPFWTabs( el );
-			});
-		})();
-	</script>
-
 	<script type="text/javascript">
-		$(function () { $('#jstree_div').jstree(); });
-		$('#jstree_div').on("changed.jstree", function (e, data) {
+		$(function () { $('#search_result').jstree(); });
+		$('#search_result').on("changed.jstree", function (e, data) {
 	  		console.log(data.node.li_attr.class);
 	  		if (data.node.li_attr.class === "cl") {
-	  			window.open("class_source?classname=" + data.selected[0]);
+	  			window.open("class_source?classname=" + data.selected[0] + "&keyword={{ keyword }}");
 	  		}
 	  		
 		});
