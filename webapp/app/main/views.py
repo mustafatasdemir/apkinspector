@@ -35,31 +35,37 @@ def get_session_data():
 			return analyze_objs[session['filename']]
 	return None
 
-@main.route('/', methods=['GET', 'POST'])
-@main.route('/index', methods=['GET', 'POST'])
-def index():
-	result = False
-	manifestdata = None
-	permissions = None
-	Strings = None
-	PackageClasses = None
-
+@main.route('/upload', methods=['GET','POST'])
+def upload():
 	if request.method == 'POST':
 		file = request.files['file']
 		filename = file.filename
 		filetype = file.filename.split('.', 1)[1]
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-		# "SuperAwesomeContacts.apk"
 		static_analysis = StaticAnalysis(filename)
 		session['filename'] = filename
 		analyze_objs[filename] = static_analysis
-		result = True
-		manifestdata = static_analysis.get_manifest()
-		permissions = static_analysis.get_permissions()
-		Strings = static_analysis.get_strings()
-		PackageClasses = static_analysis.get_class_method_list()
+		return redirect('/index')
+	return render_template("upload.html")
 
-	return render_template("index.html", result=result,
+
+@main.route('/', methods=['GET', 'POST'])
+@main.route('/index', methods=['GET', 'POST'])
+def index():
+	session_data = get_session_data()
+	if (session_data == None):
+		return redirect('/upload')
+	result = False
+	manifestdata = None
+	permissions = None
+	Strings = None
+	PackageClasses = None
+	manifestdata = session_data.get_manifest()
+	permissions = session_data.get_permissions()
+	Strings = session_data.get_strings()
+	PackageClasses = session_data.get_class_method_list()
+
+	return render_template("index.html",
 		manifestdata = manifestdata,
 		permissions = permissions,
 		strings_output = Strings,
@@ -70,7 +76,7 @@ def index():
 def class_source():
 	session_data = get_session_data()
 	if (session_data == None):
-		return redirect('/index')
+		return redirect('/upload')
 	data = session_data.get_java_code(request.args["classname"])
 	if data == None:
 		java_output = "Failed to load java source code"
@@ -89,7 +95,7 @@ def class_source():
 def callinout():
 	data = get_session_data()
 	if (data == None):
-		return redirect('/index')
+		return redirect('/upload')
 	callMethod = request.args["methodname"]
 	calltxt = data.get_call_in_out(callMethod)
 	return render_template("callinout.html", calltxt = calltxt)
@@ -128,7 +134,7 @@ def search():
 @main.route('/logout')
 def logout():
 	session.clear()
-	return redirect(url_for('main.index'))
+	return redirect(url_for('main.upload'))
 
 
 
