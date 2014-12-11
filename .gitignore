@@ -2,7 +2,7 @@
 *.DS_Store
 *.log
 *.project
-venv/*
+*.txt
 out/*
 temp/*
 webapp/temp/*

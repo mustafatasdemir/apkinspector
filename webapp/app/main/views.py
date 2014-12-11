@@ -15,6 +15,7 @@
 import os
 import sys
 import pickle
+import glob
 from datetime import datetime
 from flask import Flask, render_template, session, redirect, url_for, \
 	current_app, request, abort
@@ -24,7 +25,7 @@ from ..helpers.Static import *
 import subprocess
 import time
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.config['UPLOAD_FOLDER'] = "."
 app.config['SECRET_KEY'] = 'F34TF$($e34D'
 
@@ -36,20 +37,14 @@ def get_session_data():
 			return analyze_objs[session['filename']]
 	return None
 
-@main.route('/', methods=['GET', 'POST'])
-@main.route('/index', methods=['GET', 'POST'])
-def index():
-	result = False
-	manifestdata = None
-	permissions = None
-	Strings = None
-	PackageClasses = None
-
+@main.route('/upload', methods=['GET','POST'])
+def upload():
 	if request.method == 'POST':
 		file = request.files['file']
 		filename = file.filename
 		filetype = file.filename.split('.', 1)[1]
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+<<<<<<< HEAD
 		#os.system("/home/apkinspector/Desktop/apkinspector/webapp/tools/DroidBox_4.1.1/startemu.sh test1")
 		# "SuperAwesomeContacts.apk"
 		static_analysis = StaticAnalysis(filename)
@@ -62,8 +57,32 @@ def index():
 		Strings = static_analysis.get_strings()
 		
 		PackageClasses = static_analysis.get_class_method_list()
+=======
+		static_analysis = StaticAnalysis(filename)
+		session['filename'] = filename
+		analyze_objs[filename] = static_analysis
+		return redirect('/index')
+	return render_template("upload.html")
+>>>>>>> f158ca4649191212b389bb5c36a86978f8621075
 
-	return render_template("index.html", result=result,
+
+@main.route('/', methods=['GET', 'POST'])
+@main.route('/index', methods=['GET', 'POST'])
+def index():
+	session_data = get_session_data()
+	if (session_data == None):
+		return redirect('/upload')
+	result = False
+	manifestdata = None
+	permissions = None
+	Strings = None
+	PackageClasses = None
+	manifestdata = session_data.get_manifest()
+	permissions = session_data.get_permissions()
+	Strings = session_data.get_strings()
+	PackageClasses = session_data.get_class_method_list()
+
+	return render_template("index.html",
 		manifestdata = manifestdata,
 		permissions = permissions,
 		strings_output = Strings,
@@ -75,7 +94,7 @@ def index():
 def class_source():
 	session_data = get_session_data()
 	if (session_data == None):
-		return redirect('/index')
+		return redirect('/upload')
 	data = session_data.get_java_code(request.args["classname"])
 	if data == None:
 		java_output = "Failed to load java source code"
@@ -94,10 +113,40 @@ def class_source():
 def callinout():
 	data = get_session_data()
 	if (data == None):
-		return redirect('/index')
+		return redirect('/upload')
 	callMethod = request.args["methodname"]
 	calltxt = data.get_call_in_out(callMethod)
 	return render_template("callinout.html", calltxt = calltxt)
+
+@main.route('/cfg', methods=['GET'])
+def cfg():
+	data = get_session_data()
+	if (data == None):
+		return redirect('/index')
+	methodname = request.args["methodname"]
+	data.generate_cfg_xdot(methodname)
+	return render_template("cfg.html", methodname = methodname)
+
+@main.route('/method2dot.txt', methods=['GET'])
+def method2dot():
+	print "method2dot +++"
+	# return app.send_static_file('method2dot.txt')
+	try:
+		data = open('method2dot.txt', "r").read()
+	except IOError, e:
+		print str(e)
+		print "IOError"
+		data = None
+	return data
+
+@main.route('/search', methods=['GET'])
+def search():
+	data = get_session_data()
+	if (data == None):
+		return redirect('/index')
+	searchStr = request.args['keyword']
+	searchResult = data.grep(searchStr)
+	return render_template('search.html', searchResult = searchResult, keyword = searchStr)
 
 
 @main.route('/dynamic', methods=['GET','POST'])
@@ -143,7 +192,18 @@ def dynamic():
 @main.route('/logout')
 def logout():
 	session.clear()
-	return redirect(url_for('main.index'))
+	return redirect(url_for('main.upload'))
+
+
+
+@main.route('/about')
+def about():
+	return render_template("about.html")
+
+
+@main.route('/contact')
+def contact():
+	return render_template("contact.html")
 
 
 def login_user(username, password):

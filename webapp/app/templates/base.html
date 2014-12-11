@@ -12,16 +12,116 @@
 		<!-- Scripts Block-->
 		{% block scripts %}
 
+
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/demo.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/normalize.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabs.css') }}">
+	<link rel="stylesheet"
+	type="text/css"
+	href="{{ url_for('static', filename = 'styles/tabstyles.css') }}">
+	<link rel="stylesheet" 
+	href="{{ url_for('static', filename = 'scripts/dist/themes/default/style.min.css') }}" />
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/jquery-2.1.1.min.js') }}"></script>
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/modernizr.custom.js') }}"></script>
+	<script type="text/javascript"
+	language="javascript"
+	src="{{ url_for('static', filename = 'scripts/cbpFWTabs.js') }}"></script>
+	<script src="{{ url_for('static', filename = 'scripts/dist/jstree.min.js') }}"></script>
+
+	<style type="text/css">
+		#jstree_div{
+		    width: 20%;
+		    height:auto;
+		    border: 1px solid #EEEEEE;
+		    overflow-x: scroll;
+		    overflow-y: hidden;
+		    white-space: nowrap;
+		    float: left;
+		};
+
+		.tab_container {
+			width: 70%;
+			float: left;
+		}
+	</style>
+
 			{{ moment.include_moment() }}
+
+			<style type="text/css">
+				#header{
+					float:left;
+					min-width:100%;
+				}
+
+				#footer{
+					display:inline-block
+				}
+
+				#header a {
+				    text-decoration: none;
+				}
+
+				#header a:visited{
+				     color: inherit;
+				     text-decoration: none;
+				}
+				
+				#header .logo {
+					float:left;
+					margin-left: 200px;
+					width:400px;
+				}
+
+				#header li{
+					float: right;
+					margin: 30px;
+					list-style-type: none;
+				}
+				
+				#footer {
+					background:#333;
+					text-align:center;
+					/*To anchor to bottom of page uncomment the following lines:*/
+					/*position:fixed;
+					bottom:0;*/
+				}
+			</style>
 
 		{% endblock %}
 		<!-- End of Scripts Block-->
 
 	</head>
 	<body>
+		<div id="header">
+			<div class="wrap">
+    			<div class="logo">
+        			<a href="/index"><img src="{{ url_for('static', filename = 'images/logo.png') }}" width="100px"></img></a>
+         		</div>
+            	<ul>
+            		<li><a href="/about">About</a></li>
+            		<li><a href="/contact">Contact</a></li>
+            	</ul>
+    		</div>
+		</div>
 		<!-- Body Block-->
 		{% block body %}
 		{% endblock %}
 		<!-- End of Body Block-->
 	</body>
+
+	 <footer>
+  		<p>APK Inspector © Carnegie Mellon University</p>
+  		<p>Contact information: <a href="mailto:yt@cmu.edu">
+  		Yuan Tian</a></p>
+	</footer> 
 </html>

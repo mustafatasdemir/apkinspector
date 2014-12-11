@@ -3,6 +3,8 @@ from APKInfo import *
 from GetMethods import *
 from CallInOut import *
 from JAD import *
+from xdotParser import *
+import os, fnmatch
 
 class StaticAnalysis:
 
@@ -13,6 +15,7 @@ class StaticAnalysis:
 	vmx = None
 	callInOut = None
 	filename = None
+	methodMapping = {}
 
 	def __init__(self, filename):
 		self.filename = filename
@@ -54,7 +57,9 @@ class StaticAnalysis:
 				methods = self.cl.get_methods_class(i)
 				methods_output = []
 				for m in methods:
-					methods_output.append(m.get_class_name() + "->" + m.get_name()+ m.get_descriptor())
+					mname = m.get_class_name() + "->" + m.get_name()+ m.get_descriptor()
+					methods_output.append(mname)
+					self.methodMapping[mname] = m
 				classObj["classname"] = i
 				classObj["methods"] = methods_output
 				PackageClasses.append(classObj)
@@ -98,3 +103,31 @@ class StaticAnalysis:
 
 		calltxt = callInContent + "\n\n\n" + callOutContent
 		return calltxt
+
+	def generate_cfg_xdot(self, methodname):
+		m = self.methodMapping[methodname]
+		xdot = XDot(m, self.vm, self.vmx)
+		xdot.method2xdot()
+
+	def grep(self, keyword):
+		result = []
+		classname = ""
+		pathname = './temp/' + self.filename + '/java'
+		for fileName in self.find_files(pathname, '*.java'):
+			with open(fileName) as f:
+				contents = f.read()
+			if keyword in contents:
+		    	# sample classname: Ledu/cmu/wnss/funktastic/superawesomecontacts/AboutActivity;
+				classname = "L" + fileName[(7 + len(self.filename) + 6):-5] + ";"
+				print "Classname: " + classname
+				result.append(classname)
+		return result
+
+	def find_files(self, directory, pattern):
+	    for root, dirs, files in os.walk(directory):
+	        for basename in files:
+	            if fnmatch.fnmatch(basename, pattern):
+	                fileName = os.path.join(root, basename)
+	                yield fileName
+
+

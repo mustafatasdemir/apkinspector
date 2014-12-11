@@ -1,0 +1,76 @@
+<html>
+<head>
+	<meta name="MSSmartTagsPreventParsing" content="true" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>{{ methodname }}</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'styles/canviz.css') }}" />
+	<script type="text/javascript" src="{{ url_for('static', filename = 'scripts/prototype/prototype.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'scripts/path/path.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'scripts/canviz.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'scripts/x11colors.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'scripts/graphs/graphlist.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename = 'scripts/graphs/layoutlist.js') }}"></script>
+	<script type="text/javascript">
+Ajax.Responders.register({
+	onCreate: function() {
+		$('busy').show();
+	},
+	onComplete: function() {
+		if (0 == Ajax.activeRequestCount) {
+			$('busy').hide();
+		}
+	}
+});
+
+var canviz;
+document.observe('dom:loaded', function() {
+	// var list = $('graph_name');
+	// graphs.sort(function(a, b) {
+	// 	a = a.replace(/.*\//, '').toLowerCase();
+	// 	b = b.replace(/.*\//, '').toLowerCase();
+	// 	return (a > b) ? 1 : (a < b) ? -1 : 0;
+	// }).each(function(graph, index) {
+	// 	list.options[list.options.length] = new Option(graph.replace(/^.*\/(.*)$/, '$1').replace(/^(.*)\.txt$/, '$1'), graph, false, 0 == index);
+	// });
+	
+	// list = $('graph_engine');
+	// layouts.each(function(layout) {
+	// 	list.options[list.options.length] = new Option(layout, layout, false, 'dot' == layout);
+	// });
+	
+	// list = $('graph_scale');
+	// [4, 2, 1.5, 1, 0.75, 0.5].each(function(scale) {
+	// 	list.options[list.options.length] = new Option(100 * scale + '%', scale, false, 1 == scale);
+	// });
+	
+	canviz = new Canviz('graph_container');
+	// canviz.setImagePath('graphs/images/');
+	// canviz.setScale($F('graph_scale'));
+	load_graph();
+});
+function load_graph() {
+	canviz.load(graph_url());
+}
+
+function view_source() {
+	window.open(graph_url());
+}
+function graph_url() {
+	return 'method2dot.txt';
+}
+// --></script>
+</head>
+<body>
+
+<div id="busy" style="display:none">Loading...</div>
+
+<div id="page_container">
+
+<div id="graph_container"></div>
+
+<div id="debug_output" style="display: none;"></div>
+
+</div>
+
+</body>
+</html>
