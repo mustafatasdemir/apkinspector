@@ -112,6 +112,7 @@
 							<li><a href="#section-linetriangle-1"><span>Strings</span></a></li>
 							<li><a href="#section-linetriangle-2"><span>Manifest</span></a></li>
 							<li><a href="#section-linetriangle-3"><span>Permissions</span></a></li>
+							<li><a href="#section-linetriangle-4"><span>Dynamic Analysis</span></a></li>
 						</ul>
 					</nav>
 					<div class="content-wrap">
@@ -135,6 +136,20 @@
 								<pre>{{permission}}</pre><br/>
 								{% endfor %}
 							</p>
+						</section>
+
+						<section id="section-linetriangle-4">
+							<div class="container">
+							{% if not dynOutput %}
+							<form action="/dynamic"  method="post" >
+    						<p><input type="text" name="text">
+        					<input type="submit" value="Execute">
+    						</form>
+    						{% endif %}
+							</div>​
+							{% if dynOutput %}
+							<pre><code>{{ json_string }}</code></pre>
+							{% endif %}
 						</section>
 					</div><!-- /content -->
 				</div><!-- /tabs -->

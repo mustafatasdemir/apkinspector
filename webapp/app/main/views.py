@@ -21,6 +21,8 @@ from flask import Flask, render_template, session, redirect, url_for, \
 from . import main
 from .. import db
 from ..helpers.Static import *
+import subprocess
+import time
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "."
@@ -48,21 +50,25 @@ def index():
 		filename = file.filename
 		filetype = file.filename.split('.', 1)[1]
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		#os.system("/home/apkinspector/Desktop/apkinspector/webapp/tools/DroidBox_4.1.1/startemu.sh test1")
 		# "SuperAwesomeContacts.apk"
 		static_analysis = StaticAnalysis(filename)
 		session['filename'] = filename
 		analyze_objs[filename] = static_analysis
 		result = True
+		
 		manifestdata = static_analysis.get_manifest()
 		permissions = static_analysis.get_permissions()
 		Strings = static_analysis.get_strings()
+		
 		PackageClasses = static_analysis.get_class_method_list()
 
 	return render_template("index.html", result=result,
 		manifestdata = manifestdata,
 		permissions = permissions,
 		strings_output = Strings,
-		classes_output = PackageClasses)
+		classes_output = PackageClasses,
+		dynamic=Strings)
 
 
 @main.route('/class_source', methods=['GET'])
@@ -92,6 +98,46 @@ def callinout():
 	callMethod = request.args["methodname"]
 	calltxt = data.get_call_in_out(callMethod)
 	return render_template("callinout.html", calltxt = calltxt)
+
+
+@main.route('/dynamic', methods=['GET','POST'])
+def dynamic():
+	data = get_session_data()
+	if (data == None):
+		return redirect('/index')
+	file = request.form['text']
+	print 'time'
+	print file
+	apkfile = r"/home/apkinspector/Desktop/apkinspector/webapp/" + session['filename']
+	from datetime import datetime
+	i=datetime.now()
+	outputfile = "/home/apkinspector/Desktop/apkinspector/webapp/tools/DroidBox_4.1.1/log"+i.strftime("%Y-%m-%d-%H:%M:%S")+".txt"
+	cmd = "/home/apkinspector/Desktop/apkinspector/webapp/tools/DroidBox_4.1.1/emubootcheck.sh " +file+" " + apkfile +" " + outputfile
+	print cmd
+	cmd1 = "/home/apkinspector/Downloads/android-sdk-linux/tools/android create avd -n test_droid -t 1 -d 6 -b default/armeabi-v7a"
+	os.system(cmd1)
+	os.system(cmd)
+	import time
+	time.sleep(100)
+	subprocess.call(r"/home/apkinspector/Downloads/android-sdk-linux/platform-tools/adb emu kill",shell=True)
+
+	os.system("/home/apkinspector/Downloads/android-sdk-linux/tools/android delete avd -n test_droid")
+	#outputfile = "/home/apkinspector/Desktop/apkinspector/webapp/tools/DroidBox_4.1.1/test.txt"
+
+	fo = open(outputfile,"r+")
+	str = fo.read();
+	finding = str.find('{"apkName"')
+	print 'finding'
+	print finding
+	output = str[finding:]
+	print 'output'
+	print output
+	import json
+	json_string = json.loads(output)
+	log = json.dumps(json_string,indent=4,sort_keys=True)
+	fo.close();
+	
+	return render_template("test.html", calltxt = log)
 
 
 @main.route('/logout')
