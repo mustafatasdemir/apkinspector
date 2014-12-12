@@ -7,3 +7,4 @@ out/*
 temp/*
 webapp/temp/*
 webapp/*.txt
+webapp/tools/DroidBox_4.1.1/images/*
