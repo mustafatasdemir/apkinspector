@@ -45,6 +45,7 @@ def upload():
 		filetype = file.filename.split('.', 1)[1]
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 <<<<<<< HEAD
+<<<<<<< HEAD
 		#os.system("/home/apkinspector/Desktop/apkinspector/webapp/tools/DroidBox_4.1.1/startemu.sh test1")
 		# "SuperAwesomeContacts.apk"
 		static_analysis = StaticAnalysis(filename)
@@ -57,6 +58,13 @@ def upload():
 		Strings = static_analysis.get_strings()
 		
 		PackageClasses = static_analysis.get_class_method_list()
+=======
+		static_analysis = StaticAnalysis(filename)
+		session['filename'] = filename
+		analyze_objs[filename] = static_analysis
+		return redirect('/index')
+	return render_template("upload.html")
+>>>>>>> f158ca4649191212b389bb5c36a86978f8621075
 =======
 		static_analysis = StaticAnalysis(filename)
 		session['filename'] = filename
